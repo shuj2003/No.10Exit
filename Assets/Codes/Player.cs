@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
     private Rigidbody2D rigid;
     private SpriteRenderer sprite;
     private Animator anim;
-    private BoxCollider2D collision;
 
     // Start is called before the first frame update
 
@@ -22,7 +21,6 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
-        collision = GetComponent<BoxCollider2D>();
     }
 
     private void OnEnable()
@@ -53,30 +51,9 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector2 nextVec = inputVec * speed * Time.fixedDeltaTime;
-        rigid.MovePosition(rigid.position + nextVec);
-
-    }
-
-    private void OnTriggerStay2D(Collider2D collision2) 
-    {
-        if (!collision2.CompareTag("Furniture") || collision2.GetType() != typeof(BoxCollider2D))
-            return;
-
-        SpriteRenderer sprite2 = collision2.GetComponent<SpriteRenderer>();
-        Transform transform2 = collision2.gameObject.transform;
-        BoxCollider2D boxCollider2D = (BoxCollider2D)collision2;
-        var bottom = transform.localPosition.y + collision.offset.y - collision.size.y;
-        var bottom2 = transform2.localPosition.y + boxCollider2D.offset.y - boxCollider2D.size.y;
-
-        if (bottom2 < bottom)
-        {
-            sprite2.sortingOrder = sprite.sortingOrder + 1;
-        }
-        else
-        {
-            sprite2.sortingOrder = sprite.sortingOrder - 1;
-        }
+        Vector2 nextVec = rigid.position + inputVec * speed * Time.fixedDeltaTime;
+        transform.position = new Vector3(nextVec.x, nextVec.y, sprite.bounds.min.y);
+        rigid.MovePosition(nextVec);
 
     }
 
