@@ -21,7 +21,7 @@ public class RePositionZ : MonoBehaviour
         for (int i = 1 ; i < spChildren.Length ; i++)
         {
             SpriteRenderer spChild = spChildren[i];
-            spChild.transform.position = new Vector3(spChild.transform.position.x, spChild.transform.position.y, transform.position.z - 0.00001f);
+            spChild.transform.position = new Vector3(spChild.transform.position.x, spChild.transform.position.y, transform.position.z - 0.001f);
         }
     }
 

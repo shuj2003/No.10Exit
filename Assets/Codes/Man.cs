@@ -7,10 +7,10 @@ public class Man : MonoBehaviour
     public AnimationCurve legCurve;
     public SpriteRenderer legSp;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        StartCoroutine(Rotate(30, -15, 1));
+        StartCoroutine(Rotate(20, 0, 0.7f));
+        AudioManager.instance.PlayBgm(true);
     }
 
     // Update is called once per frame

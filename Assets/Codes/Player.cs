@@ -55,6 +55,18 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(nextVec.x, nextVec.y, sprite.bounds.min.y);
         rigid.MovePosition(nextVec);
 
+        float len = GameManager.instance.man.transform.position.x - GameManager.instance.player.transform.position.x;
+        float len2 = len * len;
+        float max2 = 10f * 10f;
+        if (len2 < max2)
+        {
+            AudioManager.instance.bgmVolume = (1f - len2 / max2) * 0.2f;
+        }
+        else
+        {
+            AudioManager.instance.bgmVolume = 0f;
+        }
+
     }
 
 
