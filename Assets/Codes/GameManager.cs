@@ -6,8 +6,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public GameObject doorLeft;
-    public GameObject doorRight;
+    public Door doorLeft;
+    public Door doorRight;
+    public GameObject startPointL;
+    public GameObject startPointR;
     public Notice noticeLeft;
     public Notice noticeRight;
 
@@ -33,7 +35,7 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(Vector2.SqrMagnitude(doorLeft.transform.position - player.transform.position) < 2f * 2f)
+        if(Vector2.SqrMagnitude(startPointL.transform.position - player.transform.position) < 2f * 2f)
         {
             noticeLeft.Show();
         }
@@ -42,7 +44,7 @@ public class GameManager : MonoBehaviour
             noticeLeft.Hide();
         }
 
-        if (Vector2.SqrMagnitude(doorRight.transform.position - player.transform.position) < 2f * 2f)
+        if (Vector2.SqrMagnitude(startPointR.transform.position - player.transform.position) < 2f * 2f)
         {
             noticeRight.Show();
         }
@@ -50,6 +52,11 @@ public class GameManager : MonoBehaviour
         {
             noticeRight.Hide();
         }
+    }
+
+    public void inDoorL()
+    {
+        doorLeft.openDoor();
     }
 
 }
