@@ -23,6 +23,37 @@ public class Common : MonoBehaviour
             , corners[1].y - corners[0].y
             );
     }
+    protected IEnumerator Fade(SpriteRenderer sp, float start, float end, float time, AnimationCurve curve, Action action)
+    {
+        Color color = sp.color;
+        float during = 0;
+        sp.color = new Color(color.r, color.g, color.b, start);
+        while (Mathf.Abs(sp.color.a - end) > 0.1f)
+        {
+            during += Time.deltaTime;
+            float t = curve.Evaluate(during / time);    //経過時間(0～1)を渡すとカーブにおける変化量を返してくれる
+            sp.color = new Color(color.r, color.g, color.b, (end - start) * t + start);//移動量 * 現在の変化量で、スタート地点からどれくらい移動しているか
+            yield return null;
+        }
+        sp.color = new Color(color.r, color.g, color.b, end);
+        if (action != null) action();
+    }
+
+    protected IEnumerator MoveTransformPosition(Transform transform, Vector2 start, Vector2 end, float time, AnimationCurve curve, Action action)
+    {
+        float during = 0;
+        transform.position = start;
+        while (Vector2.Distance(transform.position, end) > 0.1f)
+        {
+            during += Time.deltaTime;
+            float t = curve.Evaluate(during / time);    //経過時間(0～1)を渡すとカーブにおける変化量を返してくれる
+            transform.position = (end - start) * t + start;//移動量 * 現在の変化量で、スタート地点からどれくらい移動しているか
+            yield return null;
+        }
+        transform.position = end;
+        if (action != null) action();
+    }
+
     protected IEnumerator MoveAnchoredPosition(RectTransform rt, float start, float end, float time, AnimationCurve curve, Action action)
     {
         float during = 0;

@@ -57,6 +57,17 @@ public class GameManager : MonoBehaviour
     public void inDoorL()
     {
         doorLeft.openDoor();
+        player.OutDoor(startPointL.transform.position, delegate () {
+            doorLeft.closeDoor();
+        });
+    }
+
+    public void inDoorR()
+    {
+        doorRight.openDoor();
+        player.OutDoor(startPointR.transform.position, delegate () {
+            doorRight.closeDoor();
+        });
     }
 
 }
