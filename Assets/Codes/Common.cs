@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Common : MonoBehaviour
 {
@@ -22,6 +23,22 @@ public class Common : MonoBehaviour
             , corners[2].x - corners[0].x
             , corners[1].y - corners[0].y
             );
+    }
+
+    protected IEnumerator FadeImage(Image img, float start, float end, float time, AnimationCurve curve, Action action)
+    {
+        Color color = img.color;
+        float during = 0;
+        img.color = new Color(color.r, color.g, color.b, start);
+        while (Mathf.Abs(img.color.a - end) > 0.1f)
+        {
+            during += Time.deltaTime;
+            float t = curve.Evaluate(during / time);    //経過時間(0～1)を渡すとカーブにおける変化量を返してくれる
+            img.color = new Color(color.r, color.g, color.b, (end - start) * t + start);//移動量 * 現在の変化量で、スタート地点からどれくらい移動しているか
+            yield return null;
+        }
+        img.color = new Color(color.r, color.g, color.b, end);
+        if (action != null) action();
     }
     protected IEnumerator Fade(SpriteRenderer sp, float start, float end, float time, AnimationCurve curve, Action action)
     {
