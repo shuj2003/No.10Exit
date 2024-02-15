@@ -6,7 +6,7 @@ using UnityEngine;
 public class Door : Common
 {
     public AnimationCurve curve;
-
+    public SpriteRendererNo no;
     public void openDoor(Action action)
     {
         StartCoroutine(RotateYTransform(transform, 0f, 80f, 2f, curve, delegate () {

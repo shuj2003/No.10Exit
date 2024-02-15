@@ -15,13 +15,14 @@ public class GameManager : MonoBehaviour
     public Notice noticeLeft;
     public Notice noticeRight;
     public FullScreenFade fullScreenFade;
+    public bool enableUI = false;
 
     public Man man;
     public Player player;
     private bool showLeftNotice = false;
 
-    private static bool isLeftStart = true;
-    private static int count = 0;
+    public static bool isLeftStart = true;
+    public static int count = 0;
 
     public void GameSet()
     {
@@ -32,13 +33,14 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        doorLeft.no.SetNo(GameManager.count);
+        doorRight.no.SetNo(GameManager.count);
+        StarttHome();
     }
 
     private void Awake()
     {
         instance = this;
-        StarttHome();
     }
 
     // Update is called once per frame
@@ -49,7 +51,9 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(Vector2.SqrMagnitude(startPointL.transform.position - player.transform.position) < 2f * 2f)
+        if (enableUI == false) return;
+
+        if (Vector2.SqrMagnitude(startPointL.transform.position - player.transform.position) < 2f * 2f)
         {
             noticeLeft.Show();
             showLeftNotice = true;
@@ -74,23 +78,25 @@ public class GameManager : MonoBehaviour
     {
         if (GameManager.isLeftStart)
         {
+            enableUI = false;
             fullScreenFade.gameObject.SetActive(true);
             fullScreenFade.FadeOut(delegate () {
                 fullScreenFade.gameObject.SetActive(false);
                 outDoorL(delegate ()
                 {
-
+                    enableUI = true;
                 });
             });
         }
         else
         {
+            enableUI = false;
             fullScreenFade.gameObject.SetActive(true);
             fullScreenFade.FadeOut(delegate () {
                 fullScreenFade.gameObject.SetActive(false);
                 outDoorR(delegate ()
                 {
-
+                    enableUI = true;
                 });
             });
         }
@@ -99,12 +105,16 @@ public class GameManager : MonoBehaviour
 
     public void ToNextHome()
     {
+        if (enableUI == false) return;
+
         if (showLeftNotice)
         {
+            enableUI = false;
             inDoorL(delegate ()
             {
                 fullScreenFade.gameObject.SetActive(true);
                 fullScreenFade.FadeIn(delegate () {
+                    GameManager.count++;
                     SceneManager.LoadScene(0);
                     GameManager.isLeftStart = false;
                 });
@@ -112,10 +122,12 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            enableUI = false;
             inDoorR(delegate ()
             {
                 fullScreenFade.gameObject.SetActive(true);
                 fullScreenFade.FadeIn(delegate () {
+                    GameManager.count++;
                     SceneManager.LoadScene(0);
                     GameManager.isLeftStart = true;
                 });

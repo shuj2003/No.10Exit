@@ -1,19 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Notice : Common
 {
     public AnimationCurve legCurve;
     public bool isLeft;
+    public Button btn;
 
     private RectTransform rt;
     private bool isShow = false;
     private Coroutine coroutine;
 
-    private void Awake()
+    private void Start()
     {
         isShow = false;
+    }
+
+    private void Awake()
+    {
         rt = GetComponent<RectTransform>();
     }
 

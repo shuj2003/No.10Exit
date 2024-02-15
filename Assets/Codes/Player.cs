@@ -22,6 +22,32 @@ public class Player : Common
 
     // Start is called before the first frame update
 
+    private void Start()
+    {
+        isAuto = true;
+        enableControll = false;
+        Color color = sprite.color;
+        sprite.color = new Color(color.r, color.g, color.b, 0f);
+        collider.isTrigger = true;
+
+        if (GameManager.isLeftStart)
+        {
+            transform.position = GameManager.instance.startPointL.transform.position + new Vector3(0f, 1f);
+        }
+        else
+        {
+            transform.position = GameManager.instance.startPointR.transform.position + new Vector3(0f, 1f);
+        }
+    }
+
+    private void Awake()
+    {
+        rigid = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
+        collider = GetComponent<Collider2D>();
+    }
+
     public void InDoor(Vector3 pos, Action complateAction)
     {
         targetPos = pos;
@@ -67,20 +93,6 @@ public class Player : Common
     {
         yield return new WaitForSeconds(2f);
         if (action != null) action();
-    }
-
-    private void Awake()
-    {
-        rigid = GetComponent<Rigidbody2D>();
-        sprite = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
-        collider = GetComponent<Collider2D>();
-
-        isAuto = true;
-        enableControll = false;
-        Color color = sprite.color;
-        sprite.color = new Color(color.r, color.g, color.b, 0f);
-        collider.isTrigger = true;
     }
 
     private void OnEnable()
