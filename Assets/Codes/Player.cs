@@ -12,6 +12,7 @@ public class Player : Common
     public RuntimeAnimatorController[] animCon;
     public AnimationCurve fadeCurve;
 
+    private Collider2D collider;
     private Rigidbody2D rigid;
     private SpriteRenderer sprite;
     private Animator anim;
@@ -21,10 +22,11 @@ public class Player : Common
 
     // Start is called before the first frame update
 
-    public void OutDoor(Vector3 pos, Action complateAction)
+    public void InDoor(Vector3 pos, Action complateAction)
     {
         targetPos = pos;
         isAuto = true;
+        collider.isTrigger = false;
 
         StartCoroutine(Wait(delegate() {
             enableControll = false;
@@ -32,8 +34,31 @@ public class Player : Common
             StartCoroutine(MoveTransformPosition(transform, transform.position, new Vector2(transform.position.x, transform.position.y + 1f), 1f, fadeCurve, delegate()
             {
                 if (complateAction != null) complateAction();
+                collider.isTrigger = true;
             }));
-            StartCoroutine(Fade(GetComponent<SpriteRenderer>(), 1f, 0f, 1f, fadeCurve, null));
+            StartCoroutine(Fade(sprite, 1f, 0f, 1f, fadeCurve, null));
+        }));
+    }
+
+    public void OutDoor(Vector3 pos, Action complateAction)
+    {
+        collider.isTrigger = true;
+        transform.position = new Vector2(pos.x, pos.y + 1f);
+        isAuto = true;
+        enableControll = false;
+        Color color = sprite.color;
+        sprite.color = new Color(color.r, color.g, color.b, 0f);
+
+        StartCoroutine(Wait(delegate () {
+            anim.SetFloat("Speed", new Vector3(0f, 1f, 0f).magnitude);
+            StartCoroutine(MoveTransformPosition(transform, transform.position, pos, 1f, fadeCurve, delegate ()
+            {
+                if (complateAction != null) complateAction();
+                enableControll = true;
+                isAuto = false;
+                collider.isTrigger = false;
+            }));
+            StartCoroutine(Fade(sprite, 0f, 1f, 1f, fadeCurve, null));
         }));
     }
 
@@ -48,9 +73,13 @@ public class Player : Common
         rigid = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        collider = GetComponent<Collider2D>();
 
-        isAuto = false;
-        enableControll = true;
+        isAuto = true;
+        enableControll = false;
+        Color color = sprite.color;
+        sprite.color = new Color(color.r, color.g, color.b, 0f);
+        collider.isTrigger = true;
     }
 
     private void OnEnable()
