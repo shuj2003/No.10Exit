@@ -43,7 +43,8 @@ public class Player : Common
     public void OutDoor(Vector3 pos, Action complateAction)
     {
         collider.isTrigger = true;
-        transform.position = new Vector2(pos.x, pos.y + 1f);
+        Vector3 posF = pos + new Vector3(0f, 1f, 0f);
+        transform.position = posF;
         isAuto = true;
         enableControll = false;
         Color color = sprite.color;
@@ -51,7 +52,7 @@ public class Player : Common
 
         StartCoroutine(Wait(delegate () {
             anim.SetFloat("Speed", new Vector3(0f, 1f, 0f).magnitude);
-            StartCoroutine(MoveTransformPosition(transform, transform.position, pos, 1f, fadeCurve, delegate ()
+            StartCoroutine(MoveTransformPosition(transform, posF, pos, 1f, fadeCurve, delegate ()
             {
                 if (complateAction != null) complateAction();
                 enableControll = true;
