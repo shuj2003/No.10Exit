@@ -24,6 +24,33 @@ public class GameManager : MonoBehaviour
     public static bool isLeftStart = true;
     public static int count = 0;
 
+    private int outStandard = 4;
+    private int outLen = 10;
+    private bool _isOut
+    {
+        get {
+            int rd = UnityEngine.Random.Range(0, outLen);
+            bool flag = rd > outStandard;
+            if(rd <= outStandard)
+            {
+                outStandard--;
+            }
+            else
+            {
+                outStandard = 4;
+            }
+            return flag;
+        }
+    }
+    public bool isOut;
+
+    public OUT_CHANGES changeNum = OUT_CHANGES.NONE;
+    public enum OUT_CHANGES 
+    {
+        WALL_1 = 0,
+        NONE,
+    }
+
     public void GameSet()
     {
         GameManager.count = 0;
@@ -33,6 +60,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isOut = _isOut;
+        if (isOut) changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
         doorLeft.no.SetNo(GameManager.count);
         doorRight.no.SetNo(GameManager.count);
         StarttHome();
@@ -114,7 +143,28 @@ public class GameManager : MonoBehaviour
             {
                 fullScreenFade.gameObject.SetActive(true);
                 fullScreenFade.FadeIn(delegate () {
-                    GameManager.count++;
+                    if (isOut)
+                    {
+                        if (GameManager.isLeftStart)
+                        {
+                            GameManager.count++;
+                        }
+                        else
+                        {
+                            GameManager.count = 0;
+                        }
+                    }
+                    else
+                    {
+                        if (GameManager.isLeftStart)
+                        {
+                            GameManager.count = 0;
+                        }
+                        else
+                        {
+                            GameManager.count++;
+                        }
+                    }
                     SceneManager.LoadScene(0);
                     GameManager.isLeftStart = false;
                 });
@@ -127,7 +177,28 @@ public class GameManager : MonoBehaviour
             {
                 fullScreenFade.gameObject.SetActive(true);
                 fullScreenFade.FadeIn(delegate () {
-                    GameManager.count++;
+                    if (isOut)
+                    {
+                        if (GameManager.isLeftStart)
+                        {
+                            GameManager.count = 0; 
+                        }
+                        else
+                        {
+                            GameManager.count++;
+                        }
+                    }
+                    else
+                    {
+                        if (GameManager.isLeftStart)
+                        {
+                            GameManager.count++; 
+                        }
+                        else
+                        {
+                            GameManager.count = 0;
+                        }
+                    }
                     SceneManager.LoadScene(0);
                     GameManager.isLeftStart = true;
                 });

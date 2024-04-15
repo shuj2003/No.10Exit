@@ -11,14 +11,6 @@ public class Wall : MonoBehaviour
     private List<GameObject> strips;
     private SpriteRenderer spriteRenderer;
 
-    // 変化
-    private int change_flag = 0;
-
-    public void change_1()
-    {
-        change_flag = 1;
-    }
-
     void Start()
     {
         
@@ -43,9 +35,9 @@ public class Wall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (change_flag)
+        switch (GameManager.instance.changeNum)
         {
-            case 1:// 変化：真ん中のボー段々太くなります。
+            case GameManager.OUT_CHANGES.WALL_1:// 変化：真ん中のボー段々太くなります。
                 {
                     for (int i = 0; i < strips.Count; i++)
                     {
