@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
         MAN_1,
         MAN_2,
         MAN_3,
+        MAN_4,
         NONE,
     }
 

@@ -6,6 +6,8 @@ public class Man : Common
 {
     public AnimationCurve legCurve;
     public SpriteRenderer legSp;
+    public GameObject hair;
+    public GameObject hair2;
 
     private void Awake()
     {

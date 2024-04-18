@@ -11,15 +11,16 @@ public class ChangeManager : MonoBehaviour
 
     [Header(" # Wall ")]
     public Wall wall;
-    public GameObject[] wall_pictures;
+    public GameObject[] wall_pictures1;
+    public GameObject[] wall_pictures2;
 
     [Header(" # Window ")]
     public GameObject window_bg;
     public GameObject window_city;
     public GameObject window_light;
 
-    private float timeCount = 0f;
-    private float timeEnd = 10f;
+    private float timeCount = 1f;
+    private float timeEnd = 1f;
     private float[] startDatas;
     private float[] endDatas;
 
@@ -43,49 +44,65 @@ public class ChangeManager : MonoBehaviour
             case GameManager.OUT_CHANGES.WALL_1:// 変化：真ん中のボー段々太くなります。
                 {
                     timeCount = 0f;
-                    timeEnd = 10f;
+                    timeEnd = 20f;
                     startDatas = new float[] { 0.5f };
                     endDatas = new float[] { 1f };
                 }
                 break;
             case GameManager.OUT_CHANGES.WALL_2:// 変化：絵全部逆さま
                 {
-                    timeCount = 10f;
-                    timeEnd = 10f;
-                    startDatas = new float[] { -1f };
-                    endDatas = new float[] { -1f };
+                    for (int i = 0; i < wall_pictures1.Length; i++)
+                    {
+                        var obj = wall_pictures1[i];
+                        Vector3 localScale = obj.GetComponent<Transform>().localScale;
+                        localScale.y = -1f;
+                        obj.GetComponent<Transform>().localScale = localScale;
+                    }
+
+                    for (int i = 0; i < wall_pictures2.Length; i++)
+                    {
+                        var obj = wall_pictures2[i];
+                        Vector3 localScale = obj.GetComponent<Transform>().localScale;
+                        localScale.y = -2f;
+                        obj.GetComponent<Transform>().localScale = localScale;
+                    }
                 }
                 break;
             case GameManager.OUT_CHANGES.WINDOW_1:// 変化：段々夜になります
                 {
                     timeCount = 0f;
-                    timeEnd = 10f;
+                    timeEnd = 20f;
                     startDatas = new float[] { 1f, 1f };
                     endDatas = new float[] { 0.25f, 0f };
                 }
                 break;
             case GameManager.OUT_CHANGES.MAN_1:// 変化：向き逆
                 {
-                    timeCount = 10f;
-                    timeEnd = 10f;
-                    startDatas = new float[] { -1f };
-                    endDatas = new float[] { -1f };
+                    Vector3 localScale = man.GetComponent<Transform>().localScale;
+                    localScale.x *= -1f;
+                    man.GetComponent<Transform>().localScale = localScale;
                 }
                 break;
             case GameManager.OUT_CHANGES.MAN_2:// 変化：移動
                 {
                     timeCount = 0f;
-                    timeEnd = 10f;
+                    timeEnd = 20f;
                     startDatas = new float[] { 5f };
-                    endDatas = new float[] { 4f };
+                    endDatas = new float[] { 4.5f };
                 }
                 break;
             case GameManager.OUT_CHANGES.MAN_3:// 変化：大きいめ
                 {
                     timeCount = 0f;
-                    timeEnd = 10f;
+                    timeEnd = 20f;
                     startDatas = new float[] { 0.2f };
-                    endDatas = new float[] { 0.3f };
+                    endDatas = new float[] { 0.22f };
+                }
+                break;
+            case GameManager.OUT_CHANGES.MAN_4:// 変化：髪型
+                {
+                    man.hair.SetActive(false);
+                    man.hair2.SetActive(true);
                 }
                 break;
             default:
@@ -113,14 +130,7 @@ public class ChangeManager : MonoBehaviour
                 break;
             case GameManager.OUT_CHANGES.WALL_2:// 変化：絵全部逆さま
                 {
-                    for (int i = 0; i < wall_pictures.Length; i++)
-                    {
-                        var obj = wall_pictures[i];
-                        Vector3 localScale = obj.GetComponent<Transform>().localScale;
-                        if(localScale.y > 0f)
-                            localScale.y *= NowData(0);
-                        obj.GetComponent<Transform>().localScale = localScale;
-                    }
+                    
                 }
                 break;
             case GameManager.OUT_CHANGES.WINDOW_1:// 変化：段々夜になります
@@ -137,10 +147,7 @@ public class ChangeManager : MonoBehaviour
                 break;
             case GameManager.OUT_CHANGES.MAN_1:// 変化：向き逆
                 {
-                    Vector3 localScale = man.GetComponent<Transform>().localScale;
-                    if (localScale.x > 0f)
-                        localScale.x *= NowData(0);
-                    man.GetComponent<Transform>().localScale = localScale;
+                    
                 }
                 break;
             case GameManager.OUT_CHANGES.MAN_2:// 変化：移動
@@ -156,6 +163,11 @@ public class ChangeManager : MonoBehaviour
                     localScale.x = NowData(0);
                     localScale.y = NowData(0);
                     man.GetComponent<Transform>().localScale = localScale;
+                }
+                break;
+            case GameManager.OUT_CHANGES.MAN_4:// 変化：髪型
+                {
+                    
                 }
                 break;
             default:
