@@ -8,7 +8,7 @@ public class Wall : MonoBehaviour
 
     public GameObject strip;
 
-    private List<GameObject> strips;
+    public List<GameObject> strips;
     private SpriteRenderer spriteRenderer;
 
     void Start()
@@ -35,31 +35,6 @@ public class Wall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (GameManager.instance.changeNum)
-        {
-            case GameManager.OUT_CHANGES.WALL_1:// 変化：真ん中のボー段々太くなります。
-                {
-                    for (int i = 0; i < strips.Count; i++)
-                    {
-                        var obj = strips[i];
-                        Transform tra = obj.GetComponent<Transform>();
-                        Vector3 scale = tra.localScale;
-                        if (scale.x < 1f)
-                        {
-                            // 1まであと0.5f,10秒かけて変化します
-                            scale.x += (Time.deltaTime * 0.5f) / 10f;
-                        }
-                        else
-                        {
-                            scale.x = 1f;
-                        }
-                        tra.localScale = scale;
-                    }
-                }
-                break;
-            default:
-                break;
-        }
 
     }
 

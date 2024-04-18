@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     public static int count = 0;
 
     private int outStandard = 4;
-    private int outLen = 10;
+    private int outLen = 100;
     private bool _isOut
     {
         get {
@@ -48,6 +48,11 @@ public class GameManager : MonoBehaviour
     public enum OUT_CHANGES 
     {
         WALL_1 = 0,
+        WALL_2,
+        WINDOW_1,
+        MAN_1,
+        MAN_2,
+        MAN_3,
         NONE,
     }
 
@@ -61,6 +66,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         isOut = _isOut;
+        changeNum = OUT_CHANGES.NONE;
         if (isOut) changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
         doorLeft.no.SetNo(GameManager.count);
         doorRight.no.SetNo(GameManager.count);
