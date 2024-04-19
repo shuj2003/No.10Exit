@@ -172,8 +172,8 @@ public class GameManager : MonoBehaviour
                             GameManager.count++;
                         }
                     }
-                    SceneManager.LoadScene(0);
                     GameManager.isLeftStart = false;
+                    SceneManager.LoadScene(0);                    
                 });
             });
         }
@@ -206,8 +206,8 @@ public class GameManager : MonoBehaviour
                             GameManager.count = 0;
                         }
                     }
-                    SceneManager.LoadScene(0);
                     GameManager.isLeftStart = true;
+                    SceneManager.LoadScene(0);
                 });
             });
         }
