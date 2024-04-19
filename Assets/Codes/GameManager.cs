@@ -57,12 +57,6 @@ public class GameManager : MonoBehaviour
         NONE,
     }
 
-    public void GameSet()
-    {
-        GameManager.count = 0;
-        GameManager.isLeftStart = true;
-    }
-
     // Start is called before the first frame update
     void Start()
     {
