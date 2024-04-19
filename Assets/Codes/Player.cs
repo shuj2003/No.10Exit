@@ -12,7 +12,7 @@ public class Player : Common
     public RuntimeAnimatorController[] animCon;
     public AnimationCurve fadeCurve;
 
-    private Collider2D collider;
+    private Collider2D coll;
     private Rigidbody2D rigid;
     private SpriteRenderer sprite;
     private Animator anim;
@@ -28,7 +28,7 @@ public class Player : Common
         enableControll = false;
         Color color = sprite.color;
         sprite.color = new Color(color.r, color.g, color.b, 0f);
-        collider.isTrigger = true;
+        coll.isTrigger = true;
 
         if (GameManager.isLeftStart)
         {
@@ -45,14 +45,14 @@ public class Player : Common
         rigid = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
-        collider = GetComponent<Collider2D>();
+        coll = GetComponent<Collider2D>();
     }
 
     public void InDoor(Vector3 pos, Action complateAction)
     {
         targetPos = pos;
         isAuto = true;
-        collider.isTrigger = false;
+        coll.isTrigger = false;
 
         StartCoroutine(Wait(delegate() {
             enableControll = false;
@@ -60,7 +60,7 @@ public class Player : Common
             StartCoroutine(MoveTransformPosition(transform, transform.position, new Vector2(transform.position.x, transform.position.y + 1f), 1f, fadeCurve, delegate()
             {
                 if (complateAction != null) complateAction();
-                collider.isTrigger = true;
+                coll.isTrigger = true;
             }));
             StartCoroutine(Fade(sprite, 1f, 0f, 1f, fadeCurve, null));
         }));
@@ -68,7 +68,7 @@ public class Player : Common
 
     public void OutDoor(Vector3 pos, Action complateAction)
     {
-        collider.isTrigger = true;
+        coll.isTrigger = true;
         Vector3 posF = pos + new Vector3(0f, 1f, 0f);
         transform.position = posF;
         isAuto = true;
@@ -83,7 +83,7 @@ public class Player : Common
                 if (complateAction != null) complateAction();
                 enableControll = true;
                 isAuto = false;
-                collider.isTrigger = false;
+                coll.isTrigger = false;
             }));
             StartCoroutine(Fade(sprite, 0f, 1f, 1f, fadeCurve, null));
         }));
