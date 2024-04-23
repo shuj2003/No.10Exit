@@ -111,7 +111,15 @@ public class Player : Common
             }
             else
             {
-                inputVec = (targetPos - transform.position).normalized;
+                Vector3 hoko = targetPos - transform.position;
+                if(hoko.magnitude < 0.1f)
+                {
+                    inputVec = Vector3.zero;
+                }
+                else
+                {
+                    inputVec = hoko.normalized;
+                }
             }
         }
 

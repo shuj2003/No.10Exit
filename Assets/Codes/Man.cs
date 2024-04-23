@@ -8,10 +8,12 @@ public class Man : Common
     public SpriteRenderer legSp;
     public GameObject hair;
     public GameObject hair2;
+    public float aniTime;
 
     private void Awake()
     {
-        StartCoroutine(Rotate(20f, 0f, 0.7f));
+        aniTime = 0.7f;
+        StartCoroutine(Rotate(20f, 0f));
         AudioManager.instance.PlayBgm(true);
     }
 
@@ -21,17 +23,17 @@ public class Man : Common
         
     }
 
-    IEnumerator Rotate(float start, float end, float time)
+    IEnumerator Rotate(float start, float end)
     {
-        return RotateZTransform(legSp.transform, start, end, time, legCurve, delegate () {
-            StartCoroutine(RotateBack(end, start, time));
+        return RotateZTransform(legSp.transform, start, end, aniTime, legCurve, delegate () {
+            StartCoroutine(RotateBack(end, start));
         });
     }
 
-    IEnumerator RotateBack(float start, float end, float time)
+    IEnumerator RotateBack(float start, float end)
     {
-        return RotateZTransform(legSp.transform, start, end, time, legCurve, delegate () {
-            StartCoroutine(Rotate(end, start, time));
+        return RotateZTransform(legSp.transform, start, end, aniTime, legCurve, delegate () {
+            StartCoroutine(Rotate(end, start));
         });
     }
 

@@ -44,7 +44,7 @@ public class ChangeManager : MonoBehaviour
             case GameManager.OUT_CHANGES.WALL_1:// 変化：真ん中のボー段々太くなります。
                 {
                     timeCount = 0f;
-                    timeEnd = 20f;
+                    timeEnd = 15f;
                     startDatas = new float[] { 0.5f };
                     endDatas = new float[] { 1f };
                 }
@@ -71,7 +71,7 @@ public class ChangeManager : MonoBehaviour
             case GameManager.OUT_CHANGES.WINDOW_1:// 変化：段々夜になります
                 {
                     timeCount = 0f;
-                    timeEnd = 20f;
+                    timeEnd = 15f;
                     startDatas = new float[] { 1f, 1f };
                     endDatas = new float[] { 0.25f, 0f };
                 }
@@ -86,7 +86,7 @@ public class ChangeManager : MonoBehaviour
             case GameManager.OUT_CHANGES.MAN_2:// 変化：移動
                 {
                     timeCount = 0f;
-                    timeEnd = 20f;
+                    timeEnd = 15f;
                     startDatas = new float[] { 5f };
                     endDatas = new float[] { 4.5f };
                 }
@@ -94,15 +94,20 @@ public class ChangeManager : MonoBehaviour
             case GameManager.OUT_CHANGES.MAN_3:// 変化：大きいめ
                 {
                     timeCount = 0f;
-                    timeEnd = 20f;
+                    timeEnd = 15f;
                     startDatas = new float[] { 0.2f };
-                    endDatas = new float[] { 0.22f };
+                    endDatas = new float[] { 0.24f };
                 }
                 break;
             case GameManager.OUT_CHANGES.MAN_4:// 変化：髪型
                 {
                     man.hair.SetActive(false);
                     man.hair2.SetActive(true);
+                }
+                break;
+            case GameManager.OUT_CHANGES.MAN_5:// 足動き速くする
+                {
+                    man.aniTime = 0.35f;
                 }
                 break;
             default:
@@ -161,13 +166,17 @@ public class ChangeManager : MonoBehaviour
                 {
                     Vector3 localScale = man.GetComponent<Transform>().localScale;
                     localScale.x = NowData(0);
-                    localScale.y = NowData(0);
                     man.GetComponent<Transform>().localScale = localScale;
                 }
                 break;
             case GameManager.OUT_CHANGES.MAN_4:// 変化：髪型
                 {
                     
+                }
+                break;
+            case GameManager.OUT_CHANGES.MAN_5:// 足動き速くする
+                {
+
                 }
                 break;
             default:
