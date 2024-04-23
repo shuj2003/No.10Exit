@@ -68,6 +68,10 @@ public class ChangeManager : MonoBehaviour
                     }
                 }
                 break;
+            case GameManager.OUT_CHANGES.WALL_3:// 絵が落ちます
+                {
+                }
+                break;
             case GameManager.OUT_CHANGES.WINDOW_1:// 変化：段々夜になります
                 {
                     timeCount = 0f;
@@ -136,6 +140,29 @@ public class ChangeManager : MonoBehaviour
             case GameManager.OUT_CHANGES.WALL_2:// 変化：絵全部逆さま
                 {
                     
+                }
+                break;
+            case GameManager.OUT_CHANGES.WALL_3:// 絵が落ちます
+                {
+                    for (int i = 0; i < wall_pictures1.Length; i++)
+                    {
+                        var obj = wall_pictures1[i];
+                        Vector3 localPosition = obj.GetComponent<Transform>().localPosition;
+                        if ((GameManager.instance.player.transform.localPosition - localPosition).magnitude < 6)
+                        {
+                            obj.GetComponent<Rigidbody2D>().gravityScale = 1f;
+                        }
+                    }
+
+                    for (int i = 0; i < wall_pictures2.Length; i++)
+                    {
+                        var obj = wall_pictures2[i];
+                        Vector3 localPosition = obj.GetComponent<Transform>().localPosition;
+                        if ((GameManager.instance.player.transform.localPosition - localPosition).magnitude < 6)
+                        {
+                            obj.GetComponent<Rigidbody2D>().gravityScale = 1f;
+                        }
+                    }
                 }
                 break;
             case GameManager.OUT_CHANGES.WINDOW_1:// 変化：段々夜になります

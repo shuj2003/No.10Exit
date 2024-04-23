@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
     {
         WALL_1 = 0,
         WALL_2,
+        WALL_3,
         WINDOW_1,
         MAN_1,
         MAN_2,
