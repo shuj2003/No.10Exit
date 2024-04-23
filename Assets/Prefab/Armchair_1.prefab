@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4795495497930650322}
   - component: {fileID: 5505562141283543956}
   - component: {fileID: 2486329867713258487}
-  - component: {fileID: 2203477268935794027}
+  - component: {fileID: 1560354579244909965}
   m_Layer: 0
   m_Name: Armchair_1
   m_TagString: Furniture
@@ -122,18 +122,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0.4}
   m_Size: {x: 2.66, y: 0.8}
   m_Direction: 1
---- !u!114 &2203477268935794027
-MonoBehaviour:
+--- !u!210 &1560354579244909965
+SortingGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6088466186109441524}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 701c2f5334e3248558713492e62a08b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_SortingLayerID: 1578205211
+  m_SortingLayer: 2
+  m_SortingOrder: 2
+  m_SortAtRoot: 0
 --- !u!1 &7387157388215423549
 GameObject:
   m_ObjectHideFlags: 0

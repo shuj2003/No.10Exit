@@ -48,7 +48,7 @@ public class Wall : MonoBehaviour
             transformObj.localPosition = new Vector3((-20f + i) / transform.localScale.x, 1, 0);
             transformObj.localScale = new Vector3(0.5f, 1, 1);
             transformObj.parent = transform;
-            obj.GetComponent<SpriteRenderer>().sortingOrder = spriteRenderer.sortingOrder;
+            obj.GetComponent<SpriteRenderer>().sortingOrder = spriteRenderer.sortingOrder + 1;
             obj.GetComponent<SpriteRenderer>().sortingLayerID = spriteRenderer.sortingLayerID;
         }
 

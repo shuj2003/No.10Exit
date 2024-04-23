@@ -137,7 +137,7 @@ public class Player : Common
     void FixedUpdate()
     {
         Vector2 nextVec = rigid.position + inputVec * speed * Time.fixedDeltaTime;
-        transform.position = new Vector3(nextVec.x, nextVec.y, sprite.bounds.min.y);
+        transform.position = new Vector2(nextVec.x, nextVec.y);
         rigid.MovePosition(nextVec);
 
         float len = GameManager.instance.man.transform.position.x - GameManager.instance.player.transform.position.x;
