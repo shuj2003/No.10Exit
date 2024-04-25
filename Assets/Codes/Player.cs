@@ -30,7 +30,7 @@ public class Player : Common
         sprite.color = new Color(color.r, color.g, color.b, 0f);
         coll.isTrigger = true;
 
-        if (GameManager.isLeftStart)
+        if (!PlayerPrefs.HasKey("isLeftStart") || PlayerPrefs.GetInt("isLeftStart") == 1)
         {
             transform.position = GameManager.instance.startPointL.transform.position + new Vector3(0f, 1f);
         }

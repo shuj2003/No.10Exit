@@ -148,9 +148,11 @@ public class ChangeManager : MonoBehaviour
                     {
                         var obj = wall_pictures1[i];
                         Vector3 localPosition = obj.GetComponent<Transform>().localPosition;
-                        if ((GameManager.instance.player.transform.localPosition - localPosition).magnitude < 6)
+                        if ((GameManager.instance.player.transform.localPosition - localPosition).magnitude < 6 && obj.GetComponent<Rigidbody2D>().gravityScale == 0f)
                         {
                             obj.GetComponent<Rigidbody2D>().gravityScale = 1f;
+                            int r = (Random.Range(0, 2) * 2 - 1) * Random.Range(1, 31) * 2;
+                            obj.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0, r);
                         }
                     }
 
@@ -158,9 +160,11 @@ public class ChangeManager : MonoBehaviour
                     {
                         var obj = wall_pictures2[i];
                         Vector3 localPosition = obj.GetComponent<Transform>().localPosition;
-                        if ((GameManager.instance.player.transform.localPosition - localPosition).magnitude < 6)
+                        if ((GameManager.instance.player.transform.localPosition - localPosition).magnitude < 6 && obj.GetComponent<Rigidbody2D>().gravityScale == 0f)
                         {
                             obj.GetComponent<Rigidbody2D>().gravityScale = 1f;
+                            int r = (Random.Range(0, 2) * 2 - 1) * Random.Range(1, 31) * 2;
+                            obj.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0, r);
                         }
                     }
                 }

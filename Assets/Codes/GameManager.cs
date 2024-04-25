@@ -21,8 +21,8 @@ public class GameManager : MonoBehaviour
     public Player player;
     private bool showLeftNotice = false;
 
-    public static bool isLeftStart = true;
-    public static int count = 0;
+    public bool isLeftStart;
+    public int count;
 
     private int outStandard = 4;
     private int outLen = 100;
@@ -62,11 +62,14 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isLeftStart = !PlayerPrefs.HasKey("isLeftStart") || PlayerPrefs.GetInt("isLeftStart") == 1;
+        count = !PlayerPrefs.HasKey("count") ? 0 : PlayerPrefs.GetInt("count");
+
         isOut = _isOut;
         changeNum = OUT_CHANGES.NONE;
         if (isOut) changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
-        doorLeft.no.SetNo(GameManager.count);
-        doorRight.no.SetNo(GameManager.count);
+        doorLeft.no.SetNo(count);
+        doorRight.no.SetNo(count);
         StarttHome();
     }
 
@@ -108,7 +111,7 @@ public class GameManager : MonoBehaviour
 
     public void StarttHome()
     {
-        if (GameManager.isLeftStart)
+        if (isLeftStart)
         {
             enableUI = false;
             fullScreenFade.gameObject.SetActive(true);
@@ -148,27 +151,29 @@ public class GameManager : MonoBehaviour
                 fullScreenFade.FadeIn(delegate () {
                     if (isOut)
                     {
-                        if (GameManager.isLeftStart)
+                        if (isLeftStart)
                         {
-                            GameManager.count++;
+                            count++;
                         }
                         else
                         {
-                            GameManager.count = 0;
+                            count = 0;
                         }
                     }
                     else
                     {
-                        if (GameManager.isLeftStart)
+                        if (isLeftStart)
                         {
-                            GameManager.count = 0;
+                            count = 0;
                         }
                         else
                         {
-                            GameManager.count++;
+                            count++;
                         }
                     }
-                    GameManager.isLeftStart = false;
+                    isLeftStart = false;
+                    PlayerPrefs.SetInt("count", count);
+                    PlayerPrefs.SetInt("isLeftStart", isLeftStart ? 1 : 0);
                     SceneManager.LoadScene(0);                    
                 });
             });
@@ -182,27 +187,29 @@ public class GameManager : MonoBehaviour
                 fullScreenFade.FadeIn(delegate () {
                     if (isOut)
                     {
-                        if (GameManager.isLeftStart)
+                        if (isLeftStart)
                         {
-                            GameManager.count = 0; 
+                            count = 0; 
                         }
                         else
                         {
-                            GameManager.count++;
+                            count++;
                         }
                     }
                     else
                     {
-                        if (GameManager.isLeftStart)
+                        if (isLeftStart)
                         {
-                            GameManager.count++; 
+                            count++; 
                         }
                         else
                         {
-                            GameManager.count = 0;
+                            count = 0;
                         }
                     }
-                    GameManager.isLeftStart = true;
+                    isLeftStart = true;
+                    PlayerPrefs.SetInt("count", count);
+                    PlayerPrefs.SetInt("isLeftStart", isLeftStart ? 1 : 0);
                     SceneManager.LoadScene(0);
                 });
             });
