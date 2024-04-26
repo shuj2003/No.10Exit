@@ -153,22 +153,22 @@ public class GameManager : MonoBehaviour
                     {
                         if (isLeftStart)
                         {
-                            count++;
+                            count = 0; 
                         }
                         else
                         {
-                            count = 0;
+                            count++;
                         }
                     }
                     else
                     {
                         if (isLeftStart)
                         {
-                            count = 0;
+                            count++; 
                         }
                         else
                         {
-                            count++;
+                            count = 0;
                         }
                     }
                     isLeftStart = false;
@@ -189,22 +189,22 @@ public class GameManager : MonoBehaviour
                     {
                         if (isLeftStart)
                         {
-                            count = 0; 
+                            count++;
                         }
                         else
                         {
-                            count++;
+                            count = 0; 
                         }
                     }
                     else
                     {
                         if (isLeftStart)
                         {
-                            count++; 
+                            count = 0; 
                         }
                         else
                         {
-                            count = 0;
+                            count++;
                         }
                     }
                     isLeftStart = true;
