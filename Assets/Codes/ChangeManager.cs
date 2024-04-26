@@ -112,6 +112,11 @@ public class ChangeManager : MonoBehaviour
             case GameManager.OUT_CHANGES.MAN_5:// ‘«“®‚«‘¬‚­‚·‚é
                 {
                     man.aniTime = 0.35f;
+                    foreach(var eyebrow in man.eyebrows)
+                    {
+                        eyebrow.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0, 180);
+                    }
+                    man.mouse.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0, 180);
                 }
                 break;
             default:

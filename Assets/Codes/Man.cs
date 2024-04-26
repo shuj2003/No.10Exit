@@ -9,6 +9,8 @@ public class Man : Common
     public GameObject hair;
     public GameObject hair2;
     public float aniTime;
+    public GameObject[] eyebrows;
+    public GameObject mouse;
 
     private void Awake()
     {
