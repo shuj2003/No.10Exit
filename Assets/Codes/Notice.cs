@@ -25,6 +25,9 @@ public class Notice : Common
 
     public void Show()
     {
+
+        if (!GameManager.isLive) return;
+
         if (!isShow)
         {
             isShow = true;
@@ -43,6 +46,8 @@ public class Notice : Common
 
     public void Hide()
     {
+        if (!GameManager.isLive) return;
+
         if (isShow)
         {
             isShow = false;

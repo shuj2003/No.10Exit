@@ -11,6 +11,7 @@ public class Player : Common
     public float speed;
     public RuntimeAnimatorController[] animCon;
     public AnimationCurve fadeCurve;
+    public GameObject CameraFollow;
 
     private Collider2D coll;
     private Rigidbody2D rigid;
@@ -29,15 +30,6 @@ public class Player : Common
         Color color = sprite.color;
         sprite.color = new Color(color.r, color.g, color.b, 0f);
         coll.isTrigger = true;
-
-        if (!PlayerPrefs.HasKey("isLeftStart") || PlayerPrefs.GetInt("isLeftStart") == 1)
-        {
-            transform.position = GameManager.instance.startPointL.transform.position + new Vector3(0f, 1f);
-        }
-        else
-        {
-            transform.position = GameManager.instance.startPointR.transform.position + new Vector3(0f, 1f);
-        }
     }
 
     private void Awake()

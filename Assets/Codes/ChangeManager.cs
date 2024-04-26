@@ -37,11 +37,11 @@ public class ChangeManager : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    public void StartChange()
     {
         switch (GameManager.instance.changeNum)
         {
-            case GameManager.OUT_CHANGES.WALL_1:// 変化：真ん中のボー段々太くなります。
+            case GameManager.OUT_CHANGES.WALL_1:// ?????F?^???????{?[?i?X?????????????B
                 {
                     timeCount = 0f;
                     timeEnd = 15f;
@@ -49,7 +49,7 @@ public class ChangeManager : MonoBehaviour
                     endDatas = new float[] { 1f };
                 }
                 break;
-            case GameManager.OUT_CHANGES.WALL_2:// 変化：絵全部逆さま
+            case GameManager.OUT_CHANGES.WALL_2:// ?????F?G?S???t????
                 {
                     for (int i = 0; i < wall_pictures1.Length; i++)
                     {
@@ -68,11 +68,11 @@ public class ChangeManager : MonoBehaviour
                     }
                 }
                 break;
-            case GameManager.OUT_CHANGES.WALL_3:// 絵が落ちます
+            case GameManager.OUT_CHANGES.WALL_3:// ?G??????????
                 {
                 }
                 break;
-            case GameManager.OUT_CHANGES.WINDOW_1:// 変化：段々夜になります
+            case GameManager.OUT_CHANGES.WINDOW_1:// ?????F?i?X????????????
                 {
                     timeCount = 0f;
                     timeEnd = 15f;
@@ -80,14 +80,14 @@ public class ChangeManager : MonoBehaviour
                     endDatas = new float[] { 0.25f, 0f };
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_1:// 変化：向き逆
+            case GameManager.OUT_CHANGES.MAN_1:// ?????F?????t
                 {
                     Vector3 localScale = man.GetComponent<Transform>().localScale;
                     localScale.x *= -1f;
                     man.GetComponent<Transform>().localScale = localScale;
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_2:// 変化：移動
+            case GameManager.OUT_CHANGES.MAN_2:// ?????F????
                 {
                     timeCount = 0f;
                     timeEnd = 15f;
@@ -95,7 +95,7 @@ public class ChangeManager : MonoBehaviour
                     endDatas = new float[] { 4.5f };
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_3:// 変化：大きいめ
+            case GameManager.OUT_CHANGES.MAN_3:// ?????F????????
                 {
                     timeCount = 0f;
                     timeEnd = 15f;
@@ -103,13 +103,13 @@ public class ChangeManager : MonoBehaviour
                     endDatas = new float[] { 0.24f };
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_4:// 変化：髪型
+            case GameManager.OUT_CHANGES.MAN_4:// ?????F???^
                 {
                     man.hair.SetActive(false);
                     man.hair2.SetActive(true);
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_5:// 足動き速くする
+            case GameManager.OUT_CHANGES.MAN_5:// ??????????????
                 {
                     man.aniTime = 0.35f;
                     foreach(var eyebrow in man.eyebrows)
@@ -128,9 +128,11 @@ public class ChangeManager : MonoBehaviour
     void Update()
     {
 
+        if (!GameManager.isLive) return;
+
         switch (GameManager.instance.changeNum)
         {
-            case GameManager.OUT_CHANGES.WALL_1:// 変化：真ん中のボー段々太くなります。
+            case GameManager.OUT_CHANGES.WALL_1:// ?????F?^???????{?[?i?X?????????????B
                 {
                     for (int i = 0; i < wall.strips.Count; i++)
                     {
@@ -142,12 +144,12 @@ public class ChangeManager : MonoBehaviour
                     }
                 }
                 break;
-            case GameManager.OUT_CHANGES.WALL_2:// 変化：絵全部逆さま
+            case GameManager.OUT_CHANGES.WALL_2:// ?????F?G?S???t????
                 {
                     
                 }
                 break;
-            case GameManager.OUT_CHANGES.WALL_3:// 絵が落ちます
+            case GameManager.OUT_CHANGES.WALL_3:// ?G??????????
                 {
                     for (int i = 0; i < wall_pictures1.Length; i++)
                     {
@@ -174,43 +176,43 @@ public class ChangeManager : MonoBehaviour
                     }
                 }
                 break;
-            case GameManager.OUT_CHANGES.WINDOW_1:// 変化：段々夜になります
+            case GameManager.OUT_CHANGES.WINDOW_1:// ?????F?i?X????????????
                 {
-                    // 程度は0.75f,10秒かけて変化します
+                    // ???x??0.75f,10?b????????????????
                     float r = NowData(0);
                     window_bg.GetComponent<SpriteRenderer>().color = new Color(r, r, r);
 
-                    // 程度は1f,10秒かけて変化します
+                    // ???x??1f,10?b????????????????
                     Color c = window_light.GetComponent<SpriteRenderer>().color;
                     c.a = NowData(1);
                     window_light.GetComponent<SpriteRenderer>().color = c;
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_1:// 変化：向き逆
+            case GameManager.OUT_CHANGES.MAN_1:// ?????F?????t
                 {
                     
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_2:// 変化：移動
+            case GameManager.OUT_CHANGES.MAN_2:// ?????F????
                 {
                     Vector3 localPosition = man.GetComponent<Transform>().localPosition;
                     localPosition.x = NowData(0);
                     man.GetComponent<Transform>().localPosition = localPosition;
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_3:// 変化：大きいめ
+            case GameManager.OUT_CHANGES.MAN_3:// ?????F????????
                 {
                     Vector3 localScale = man.GetComponent<Transform>().localScale;
                     localScale.x = NowData(0);
                     man.GetComponent<Transform>().localScale = localScale;
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_4:// 変化：髪型
+            case GameManager.OUT_CHANGES.MAN_4:// ?????F???^
                 {
                     
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_5:// 足動き速くする
+            case GameManager.OUT_CHANGES.MAN_5:// ??????????????
                 {
 
                 }

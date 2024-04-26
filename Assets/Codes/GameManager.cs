@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,12 +18,20 @@ public class GameManager : MonoBehaviour
     public FullScreenFade fullScreenFade;
     public bool enableUI = false;
 
+    public Canvas canvasTitle;
+
+    public GameObject cameraFollowTitle;
+    public GameObject classShader;
+
+    public Cinemachine.CinemachineVirtualCamera virtualCamera;
+
     public Man man;
     public Player player;
     private bool showLeftNotice = false;
 
-    public bool isLeftStart;
-    public int count;
+    public static bool isLive;
+    public static bool isLeftStart;
+    public static int count;
 
     private int outStandard = 4;
     private int outLen = 100;
@@ -62,15 +71,31 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        isLeftStart = !PlayerPrefs.HasKey("isLeftStart") || PlayerPrefs.GetInt("isLeftStart") == 1;
-        count = !PlayerPrefs.HasKey("count") ? 0 : PlayerPrefs.GetInt("count");
 
-        isOut = _isOut;
-        changeNum = OUT_CHANGES.NONE;
-        if (isOut) changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
-        doorLeft.no.SetNo(count);
-        doorRight.no.SetNo(count);
-        StarttHome();
+        if (GameManager.isLive)
+        {
+
+            // game loop
+            classShader.SetActive(false);
+            cameraFollowTitle.SetActive(false);
+            canvasTitle.enabled = false;
+            virtualCamera.Follow = player.CameraFollow.transform;
+            virtualCamera.m_Lens.OrthographicSize = 5.5f;
+
+            GameLoop();
+
+        }
+        else
+        {
+            //show Title
+            classShader.SetActive(true);
+            cameraFollowTitle.SetActive(true);
+            canvasTitle.enabled = true;
+            virtualCamera.Follow = cameraFollowTitle.transform;
+            virtualCamera.m_Lens.OrthographicSize = 1f;
+
+        }
+
     }
 
     private void Awake()
@@ -81,7 +106,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void FixedUpdate()
@@ -109,10 +134,40 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void GameLoop()
+    {
+        doorLeft.no.SetNo(GameManager.count);
+        doorRight.no.SetNo(GameManager.count);
+
+        StarttHome();
+
+    }
+
+    public void GameStart()
+    {
+        GameManager.isLeftStart = true;
+        GameManager.count = 0;
+        GameManager.isLive = true;
+
+        classShader.SetActive(false);
+        cameraFollowTitle.SetActive(false);
+        canvasTitle.enabled = false;
+        virtualCamera.Follow = player.CameraFollow.transform;
+        virtualCamera.m_Lens.OrthographicSize = 5.5f;
+
+        GameLoop();
+    }
+
     public void StarttHome()
     {
+        isOut = _isOut;
+        changeNum = OUT_CHANGES.NONE;
+        if (isOut) changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
+        ChangeManager.instance.StartChange();
+
         if (isLeftStart)
         {
+            player.transform.position = startPointL.transform.position + new Vector3(0f, 1f);
             enableUI = false;
             fullScreenFade.gameObject.SetActive(true);
             fullScreenFade.FadeOut(delegate () {
@@ -125,6 +180,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            player.transform.position = startPointR.transform.position + new Vector3(0f, 1f);
             enableUI = false;
             fullScreenFade.gameObject.SetActive(true);
             fullScreenFade.FadeOut(delegate () {
@@ -153,27 +209,26 @@ public class GameManager : MonoBehaviour
                     {
                         if (isLeftStart)
                         {
-                            count = 0; 
+                            GameManager.count = 0; 
                         }
                         else
                         {
-                            count++;
+                            GameManager.count++;
                         }
                     }
                     else
                     {
                         if (isLeftStart)
                         {
-                            count++; 
+                            GameManager.count++; 
                         }
                         else
                         {
-                            count = 0;
+                            GameManager.count = 0;
                         }
                     }
-                    isLeftStart = false;
-                    PlayerPrefs.SetInt("count", count);
-                    PlayerPrefs.SetInt("isLeftStart", isLeftStart ? 1 : 0);
+                    GameManager.isLeftStart = false;
+
                     SceneManager.LoadScene(0);                    
                 });
             });
@@ -189,27 +244,26 @@ public class GameManager : MonoBehaviour
                     {
                         if (isLeftStart)
                         {
-                            count++;
+                            GameManager.count++;
                         }
                         else
                         {
-                            count = 0; 
+                            GameManager.count = 0; 
                         }
                     }
                     else
                     {
                         if (isLeftStart)
                         {
-                            count = 0; 
+                            GameManager.count = 0; 
                         }
                         else
                         {
-                            count++;
+                            GameManager.count++;
                         }
                     }
-                    isLeftStart = true;
-                    PlayerPrefs.SetInt("count", count);
-                    PlayerPrefs.SetInt("isLeftStart", isLeftStart ? 1 : 0);
+                    GameManager.isLeftStart = true;
+
                     SceneManager.LoadScene(0);
                 });
             });
