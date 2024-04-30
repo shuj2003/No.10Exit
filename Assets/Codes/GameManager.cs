@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject cameraFollowTitle;
     public GameObject classShader;
+    public GameObject gameTitle;
+    public GameObject gameRule;
 
     public Cinemachine.CinemachineVirtualCamera virtualCamera;
 
@@ -94,6 +96,9 @@ public class GameManager : MonoBehaviour
             virtualCamera.Follow = cameraFollowTitle.transform;
             virtualCamera.m_Lens.OrthographicSize = 1f;
 
+            gameTitle.SetActive(true);
+            gameRule.SetActive(false);
+
         }
 
     }
@@ -132,6 +137,12 @@ public class GameManager : MonoBehaviour
         {
             noticeRight.Hide();
         }
+    }
+
+    public void GameRuleShow()
+    {
+        gameTitle.SetActive(false);
+        gameRule.SetActive(true);
     }
 
     private void GameLoop()
