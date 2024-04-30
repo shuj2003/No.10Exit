@@ -15,7 +15,7 @@ public class Player : Common
 
     private Collider2D coll;
     private Rigidbody2D rigid;
-    private SpriteRenderer sprite;
+    private SpriteRenderer[] sprites;
     private Animator anim;
     private bool isAuto;
     private bool enableControll;
@@ -27,15 +27,18 @@ public class Player : Common
     {
         isAuto = true;
         enableControll = false;
-        Color color = sprite.color;
-        sprite.color = new Color(color.r, color.g, color.b, 0f);
+        foreach(var sprite in sprites)
+        {
+            Color color = sprite.color;
+            sprite.color = new Color(color.r, color.g, color.b, 0f);
+        }
         coll.isTrigger = true;
     }
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
-        sprite = GetComponent<SpriteRenderer>();
+        sprites = GetComponentsInChildren<SpriteRenderer>();
         anim = GetComponent<Animator>();
         coll = GetComponent<Collider2D>();
     }
@@ -54,7 +57,10 @@ public class Player : Common
                 if (complateAction != null) complateAction();
                 coll.isTrigger = true;
             }));
-            StartCoroutine(Fade(sprite, 1f, 0f, 1f, fadeCurve, null));
+            foreach (var sprite in sprites)
+            {
+                StartCoroutine(Fade(sprite, 1f, 0f, 1f, fadeCurve, null));
+            }
         }));
     }
 
@@ -65,8 +71,11 @@ public class Player : Common
         transform.position = posF;
         isAuto = true;
         enableControll = false;
-        Color color = sprite.color;
-        sprite.color = new Color(color.r, color.g, color.b, 0f);
+        foreach (var sprite in sprites)
+        {
+            Color color = sprite.color;
+            sprite.color = new Color(color.r, color.g, color.b, 0f);
+        }  
 
         StartCoroutine(Wait(delegate () {
             anim.SetFloat("Speed", new Vector3(0f, 1f, 0f).magnitude);
@@ -77,7 +86,10 @@ public class Player : Common
                 isAuto = false;
                 coll.isTrigger = false;
             }));
-            StartCoroutine(Fade(sprite, 0f, 1f, 1f, fadeCurve, null));
+            foreach (var sprite in sprites)
+            {
+                StartCoroutine(Fade(sprite, 0f, 1f, 1f, fadeCurve, null));
+            }
         }));
     }
 
@@ -128,7 +140,7 @@ public class Player : Common
 
             if (inputVec.x != 0)
             {
-                sprite.flipX = inputVec.x < 0;
+                transform.localScale = new Vector2(inputVec.x < 0 ? -1f : 1f, 1f);
             }
         }
         
