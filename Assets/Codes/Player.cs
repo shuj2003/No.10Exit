@@ -14,7 +14,6 @@ public class Player : Common
     public GameObject CameraFollow;
 
     private Collider2D coll;
-    private Rigidbody2D rigid;
     private SpriteRenderer[] sprites;
     private Animator anim;
     private bool isAuto;
@@ -37,7 +36,6 @@ public class Player : Common
 
     private void Awake()
     {
-        rigid = GetComponent<Rigidbody2D>();
         sprites = GetComponentsInChildren<SpriteRenderer>();
         anim = GetComponent<Animator>();
         coll = GetComponent<Collider2D>();
@@ -47,30 +45,37 @@ public class Player : Common
     {
         targetPos = pos;
         isAuto = true;
-        coll.isTrigger = false;
+        coll.isTrigger = true;
 
         StartCoroutine(Wait(delegate() {
+
+            //after 2 sec 
             enableControll = false;
-            anim.SetFloat("Speed", new Vector3(0f, 1f, 0f).magnitude);
+            anim.SetFloat("Speed", 1f);
+
             StartCoroutine(MoveTransformPosition(transform, transform.position, new Vector2(transform.position.x, transform.position.y + 1f), 1f, fadeCurve, delegate()
             {
+
+                anim.SetFloat("Speed", 0f);
                 if (complateAction != null) complateAction();
-                coll.isTrigger = true;
+
             }));
+
             foreach (var sprite in sprites)
             {
                 StartCoroutine(Fade(sprite, 1f, 0f, 1f, fadeCurve, null));
             }
+
         }));
     }
 
     public void OutDoor(Vector3 pos, Action complateAction)
     {
-        coll.isTrigger = true;
         Vector3 posF = pos + new Vector3(0f, 1f, 0f);
         transform.position = posF;
         isAuto = true;
         enableControll = false;
+
         foreach (var sprite in sprites)
         {
             Color color = sprite.color;
@@ -78,18 +83,27 @@ public class Player : Common
         }  
 
         StartCoroutine(Wait(delegate () {
-            anim.SetFloat("Speed", new Vector3(0f, 1f, 0f).magnitude);
+
+            //after 2 sec
+            anim.SetFloat("Speed", 1f);
+
             StartCoroutine(MoveTransformPosition(transform, posF, pos, 1f, fadeCurve, delegate ()
             {
+
+                anim.SetFloat("Speed", 0f);
                 if (complateAction != null) complateAction();
+
                 enableControll = true;
                 isAuto = false;
                 coll.isTrigger = false;
+
             }));
+
             foreach (var sprite in sprites)
             {
                 StartCoroutine(Fade(sprite, 0f, 1f, 1f, fadeCurve, null));
             }
+
         }));
     }
 
@@ -116,14 +130,7 @@ public class Player : Common
             else
             {
                 Vector3 hoko = targetPos - transform.position;
-                if(hoko.magnitude < 0.1f)
-                {
-                    inputVec = Vector3.zero;
-                }
-                else
-                {
-                    inputVec = hoko.normalized;
-                }
+                inputVec = hoko.normalized;
             }
         }
 
@@ -136,7 +143,7 @@ public class Player : Common
     {
         if (enableControll)
         {
-            anim.SetFloat("Speed", inputVec.magnitude);
+            anim.SetFloat("Speed", inputVec.sqrMagnitude);
 
             if (inputVec.x != 0)
             {
@@ -148,9 +155,25 @@ public class Player : Common
 
     void FixedUpdate()
     {
-        Vector2 nextVec = rigid.position + inputVec * speed * Time.fixedDeltaTime;
-        transform.position = new Vector2(nextVec.x, nextVec.y);
-        rigid.MovePosition(nextVec);
+        if (!isAuto)
+        {
+            Vector2 nextVec = new Vector2(transform.position.x, transform.position.y) + inputVec * speed * Time.fixedDeltaTime;
+            transform.position = new Vector2(nextVec.x, nextVec.y);
+        }
+        else
+        {
+            Vector3 hoko = targetPos - transform.position;
+            if (hoko.sqrMagnitude < speed * Time.fixedDeltaTime * speed * Time.fixedDeltaTime)
+            {
+                transform.position = targetPos;
+            }
+            else
+            {
+                Vector2 nextVec = new Vector2(transform.position.x, transform.position.y) + inputVec * speed * Time.fixedDeltaTime;
+                transform.position = new Vector2(nextVec.x, nextVec.y);
+            }
+        }
+        
 
         float len = GameManager.instance.man.transform.position.x - GameManager.instance.player.transform.position.x;
         float len2 = len * len;
