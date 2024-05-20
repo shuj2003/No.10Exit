@@ -26,6 +26,8 @@ public class AudioManager : MonoBehaviour
         CloseDoor,
         Select,
         Decision,
+        Laughter,
+        Stab,
     }
 
     private void Awake()

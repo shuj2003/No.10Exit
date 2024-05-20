@@ -40,6 +40,21 @@ public class Common : MonoBehaviour
         img.color = new Color(color.r, color.g, color.b, end);
         if (action != null) action();
     }
+    protected IEnumerator FadeText(Text text, float start, float end, float time, AnimationCurve curve, Action action)
+    {
+        Color color = text.color;
+        float during = 0;
+        text.color = new Color(color.r, color.g, color.b, start);
+        while (Mathf.Abs(text.color.a - end) > 0.1f)
+        {
+            during += Time.deltaTime;
+            float t = curve.Evaluate(during / time);    //経過時間(0～1)を渡すとカーブにおける変化量を返してくれる
+            text.color = new Color(color.r, color.g, color.b, (end - start) * t + start);//移動量 * 現在の変化量で、スタート地点からどれくらい移動しているか
+            yield return null;
+        }
+        text.color = new Color(color.r, color.g, color.b, end);
+        if (action != null) action();
+    }
     protected IEnumerator Fade(SpriteRenderer sp, float start, float end, float time, AnimationCurve curve, Action action)
     {
         Color color = sp.color;

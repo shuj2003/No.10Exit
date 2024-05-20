@@ -10,7 +10,7 @@ public class Door : Common
     public SpriteRendererNo no;
     public GameObject door;
 
-    public void openDoor(Action action)
+    public void OpenDoor(Action action)
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.OpenDoor);
         StartCoroutine(RotateYTransform(transform, 0f, 80f, 2f, curve, delegate () {
@@ -18,7 +18,7 @@ public class Door : Common
         }));
     }
 
-    public void closeDoor(Action action)
+    public void CloseDoor(Action action)
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.CloseDoor);
         StartCoroutine(RotateYTransform(transform, 80f, 0f, 2f, curve, delegate () {

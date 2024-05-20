@@ -1087,6 +1087,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: scene_23
+      rect:
+        serializedVersion: 2
+        x: 956
+        y: 1183
+        width: 74
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c667a0cef8382f94486795e497eaebd3
+      internalID: 1962802894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1114,6 +1135,7 @@ TextureImporter:
       scene_20: 21300040
       scene_21: 21300042
       scene_22: 21300044
+      scene_23: 1962802894
       scene_24: 21300048
       scene_25: 21300050
       scene_26: 21300052

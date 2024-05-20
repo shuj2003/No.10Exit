@@ -184,7 +184,7 @@ public class GameManager : MonoBehaviour
             fullScreenFade.gameObject.SetActive(true);
             fullScreenFade.FadeOut(delegate () {
                 fullScreenFade.gameObject.SetActive(false);
-                outDoorL(delegate ()
+                OutDoorL(delegate ()
                 {
                     enableUI = true;
                 });
@@ -197,7 +197,7 @@ public class GameManager : MonoBehaviour
             fullScreenFade.gameObject.SetActive(true);
             fullScreenFade.FadeOut(delegate () {
                 fullScreenFade.gameObject.SetActive(false);
-                outDoorR(delegate ()
+                OutDoorR(delegate ()
                 {
                     enableUI = true;
                 });
@@ -213,7 +213,7 @@ public class GameManager : MonoBehaviour
         if (showLeftNotice)
         {
             enableUI = false;
-            inDoorL(delegate ()
+            InDoorL(delegate ()
             {
                 fullScreenFade.gameObject.SetActive(true);
                 fullScreenFade.FadeIn(delegate () {
@@ -260,7 +260,7 @@ public class GameManager : MonoBehaviour
         else
         {
             enableUI = false;
-            inDoorR(delegate ()
+            InDoorR(delegate ()
             {
                 fullScreenFade.gameObject.SetActive(true);
                 fullScreenFade.FadeIn(delegate () {
@@ -303,41 +303,41 @@ public class GameManager : MonoBehaviour
         
     }
 
-    private void inDoorL(Action action)
+    private void InDoorL(Action action)
     {
-        doorLeft.openDoor(null);
+        doorLeft.OpenDoor(null);
         player.InDoor(startPointL.transform.position, delegate () {
-            doorLeft.closeDoor(delegate () {
+            doorLeft.CloseDoor(delegate () {
                 if (action != null) action();
             });
         });
     }
 
-    private void inDoorR(Action action)
+    private void InDoorR(Action action)
     {
-        doorRight.openDoor(null);
+        doorRight.OpenDoor(null);
         player.InDoor(startPointR.transform.position, delegate () {
-            doorRight.closeDoor(delegate () {
+            doorRight.CloseDoor(delegate () {
                 if (action != null) action();
             });
         });
     }
 
-    private void outDoorL(Action action)
+    private void OutDoorL(Action action)
     {
-        doorLeft.openDoor(null);
+        doorLeft.OpenDoor(null);
         player.OutDoor(startPointL.transform.position, delegate () {
-            doorLeft.closeDoor(delegate () {
+            doorLeft.CloseDoor(delegate () {
                 if (action != null) action();
             });
         });
     }
 
-    private void outDoorR(Action action)
+    private void OutDoorR(Action action)
     {
-        doorRight.openDoor(null);
+        doorRight.OpenDoor(null);
         player.OutDoor(startPointR.transform.position, delegate () {
-            doorRight.closeDoor(delegate () {
+            doorRight.CloseDoor(delegate () {
                 if (action != null) action();
             });
         });

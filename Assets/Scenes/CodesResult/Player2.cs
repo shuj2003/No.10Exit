@@ -12,6 +12,8 @@ public class Player2 : Common
     public RuntimeAnimatorController[] animCon;
     public AnimationCurve fadeCurve;
     public GameObject CameraFollow;
+    public GameObject headPos;
+    public Action DeadAction;
 
     private Collider2D coll;
     private SpriteRenderer[] sprites;
@@ -39,6 +41,13 @@ public class Player2 : Common
         sprites = GetComponentsInChildren<SpriteRenderer>();
         anim = GetComponent<Animator>();
         coll = GetComponent<Collider2D>();
+    }
+
+    public void AutoMove(Vector3 pos)
+    {
+        targetPos = pos;
+        isAuto = true;
+        coll.isTrigger = true;
     }
 
     public void InDoor(Vector3 pos, Action complateAction)
@@ -187,5 +196,17 @@ public class Player2 : Common
         }
 
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+        if (collision.gameObject.tag.Equals("Head"))
+        {
+            anim.SetTrigger("Dead");
+            if (DeadAction != null) DeadAction();
+        }
+
+    }
+
 
 }
