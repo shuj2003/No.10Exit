@@ -29,14 +29,28 @@ public class GameManager : MonoBehaviour
 
     public Man man;
     public Player player;
+    public TitleText titleText;
+    public GameRule gameRuleText;
+
     private bool showLeftNotice = false;
 
+    public static bool isFirst;
     public static bool isLive;
     public static bool isLeftStart;
     public static int count;
+    public static int foundScrectNum;
 
     private int outStandard = 4;
     private int outLen = 100;
+
+    //public int[] screctNums = { 6, 3, 7 };
+    public int[] screctNums = { 1, 2, 3 };
+    private OUT_CHANGES[] screctChanges = { 
+        OUT_CHANGES.WALL_3,
+        OUT_CHANGES.WALL_3,
+        OUT_CHANGES.WALL_3 
+    };
+
     private bool _isOut
     {
         get {
@@ -76,6 +90,8 @@ public class GameManager : MonoBehaviour
 
         if (GameManager.isLive)
         {
+            GameManager.isFirst = false;
+
             // game loop
             classShader.SetActive(false);
             cameraFollowTitle.SetActive(false);
@@ -88,6 +104,18 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+
+            if (PlayerPrefs.HasKey("Ending") && PlayerPrefs.GetInt("Ending") == 1)
+            {
+                titleText.ShowTitleX();
+                gameRuleText.ShowText(screctNums[0]);
+            }
+            else
+            {
+                titleText.ShowTitle10();
+                gameRuleText.ShowText(10);
+            }
+
             //show Title
             classShader.SetActive(true);
             cameraFollowTitle.SetActive(true);
@@ -160,6 +188,8 @@ public class GameManager : MonoBehaviour
         GameManager.isLeftStart = true;
         GameManager.count = 0;
         GameManager.isLive = true;
+        GameManager.isFirst = true;
+        GameManager.foundScrectNum = 0;
 
         classShader.SetActive(false);
         cameraFollowTitle.SetActive(false);
@@ -172,10 +202,36 @@ public class GameManager : MonoBehaviour
 
     public void StarttHome()
     {
-        isOut = _isOut;
         changeNum = OUT_CHANGES.NONE;
-        if (isOut) changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
-        ChangeManager.instance.StartChange();
+        if (GameManager.isFirst)
+        {
+            isOut = false;
+        }
+        else
+        {
+            bool isScrectNum = false;
+            if (PlayerPrefs.HasKey("Ending") && PlayerPrefs.GetInt("Ending") == 1)
+            {
+                if (screctNums[GameManager.foundScrectNum] == GameManager.count)
+                {
+                    isScrectNum = true;
+
+                    GameManager.foundScrectNum++;
+
+                    isOut = true;
+                    changeNum = screctChanges[UnityEngine.Random.Range(0, screctChanges.Length)];
+                    ChangeManager.instance.StartChange();
+                }
+            }
+
+            if (!isScrectNum)
+            {
+                isOut = _isOut;
+                if (isOut) changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
+                ChangeManager.instance.StartChange();
+            }
+
+        }
 
         if (isLeftStart)
         {
@@ -242,7 +298,7 @@ public class GameManager : MonoBehaviour
                     GameManager.isLeftStart = false;
 
                     //if (GameManager.count == 11)
-                    if (GameManager.count == 1)
+                    if (GameManager.count == 7)
                     {
                         if (!PlayerPrefs.HasKey("Ending")){
                             PlayerPrefs.SetInt("Ending", 1);

@@ -19,6 +19,8 @@ public class ChangeManager : MonoBehaviour
     public GameObject window_city;
     public GameObject window_light;
 
+    public SpriteRendererNo[] screctObjects;
+
     private float timeCount = 1f;
     private float timeEnd = 1f;
     private float[] startDatas;
@@ -39,9 +41,15 @@ public class ChangeManager : MonoBehaviour
     // Start is called before the first frame update
     public void StartChange()
     {
+        foreach(var s in screctObjects)
+        {
+            if (s != null)
+                s.gameObject.SetActive(false);
+        }
+
         switch (GameManager.instance.changeNum)
         {
-            case GameManager.OUT_CHANGES.WALL_1:// ?????F?^???????{?[?i?X?????????????B
+            case GameManager.OUT_CHANGES.WALL_1:// 壁線太くなる
                 {
                     timeCount = 0f;
                     timeEnd = 15f;
@@ -49,7 +57,7 @@ public class ChangeManager : MonoBehaviour
                     endDatas = new float[] { 1f };
                 }
                 break;
-            case GameManager.OUT_CHANGES.WALL_2:// ?????F?G?S???t????
+            case GameManager.OUT_CHANGES.WALL_2:// 絵が逆さま
                 {
                     for (int i = 0; i < wall_pictures1.Length; i++)
                     {
@@ -68,11 +76,19 @@ public class ChangeManager : MonoBehaviour
                     }
                 }
                 break;
-            case GameManager.OUT_CHANGES.WALL_3:// ?G??????????
+            case GameManager.OUT_CHANGES.WALL_3:// 絵が落ちる
                 {
+                    if (PlayerPrefs.HasKey("Ending") && PlayerPrefs.GetInt("Ending") == 1)
+                    {
+                        if (GameManager.instance.screctNums[GameManager.foundScrectNum - 1] == GameManager.count)
+                        {
+                            screctObjects[0].gameObject.SetActive(true);
+                            screctObjects[0].SetNo(GameManager.instance.screctNums[GameManager.foundScrectNum]);
+                        }
+                    }
                 }
                 break;
-            case GameManager.OUT_CHANGES.WINDOW_1:// ?????F?i?X????????????
+            case GameManager.OUT_CHANGES.WINDOW_1:// 外暗くなる
                 {
                     timeCount = 0f;
                     timeEnd = 15f;
@@ -80,14 +96,14 @@ public class ChangeManager : MonoBehaviour
                     endDatas = new float[] { 0.25f, 0f };
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_1:// ?????F?????t
+            case GameManager.OUT_CHANGES.MAN_1:// 男左右逆転
                 {
                     Vector3 localScale = man.GetComponent<Transform>().localScale;
                     localScale.x *= -1f;
                     man.GetComponent<Transform>().localScale = localScale;
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_2:// ?????F????
+            case GameManager.OUT_CHANGES.MAN_2:// 男移動
                 {
                     timeCount = 0f;
                     timeEnd = 15f;
@@ -95,7 +111,7 @@ public class ChangeManager : MonoBehaviour
                     endDatas = new float[] { 4.5f };
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_3:// ?????F????????
+            case GameManager.OUT_CHANGES.MAN_3:// 男大きく
                 {
                     timeCount = 0f;
                     timeEnd = 15f;
@@ -103,13 +119,13 @@ public class ChangeManager : MonoBehaviour
                     endDatas = new float[] { 0.24f };
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_4:// ?????F???^
+            case GameManager.OUT_CHANGES.MAN_4:// 男髪チェ
                 {
                     man.hair.SetActive(false);
                     man.hair2.SetActive(true);
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_5:// ??????????????
+            case GameManager.OUT_CHANGES.MAN_5:// 男イライラする
                 {
                     man.aniTime = 0.35f;
                     foreach(var eyebrow in man.eyebrows)
@@ -132,7 +148,7 @@ public class ChangeManager : MonoBehaviour
 
         switch (GameManager.instance.changeNum)
         {
-            case GameManager.OUT_CHANGES.WALL_1:// ?????F?^???????{?[?i?X?????????????B
+            case GameManager.OUT_CHANGES.WALL_1:// 壁線太くなる
                 {
                     for (int i = 0; i < wall.strips.Count; i++)
                     {
@@ -144,12 +160,12 @@ public class ChangeManager : MonoBehaviour
                     }
                 }
                 break;
-            case GameManager.OUT_CHANGES.WALL_2:// ?????F?G?S???t????
+            case GameManager.OUT_CHANGES.WALL_2:// 絵が逆さま
                 {
                     
                 }
                 break;
-            case GameManager.OUT_CHANGES.WALL_3:// ?G??????????
+            case GameManager.OUT_CHANGES.WALL_3:// 絵が落ちる
                 {
                     for (int i = 0; i < wall_pictures1.Length; i++)
                     {
@@ -176,43 +192,41 @@ public class ChangeManager : MonoBehaviour
                     }
                 }
                 break;
-            case GameManager.OUT_CHANGES.WINDOW_1:// ?????F?i?X????????????
+            case GameManager.OUT_CHANGES.WINDOW_1:// 外暗くなる
                 {
-                    // ???x??0.75f,10?b????????????????
                     float r = NowData(0);
                     window_bg.GetComponent<SpriteRenderer>().color = new Color(r, r, r);
 
-                    // ???x??1f,10?b????????????????
                     Color c = window_light.GetComponent<SpriteRenderer>().color;
                     c.a = NowData(1);
                     window_light.GetComponent<SpriteRenderer>().color = c;
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_1:// ?????F?????t
+            case GameManager.OUT_CHANGES.MAN_1:// 男左右逆転
                 {
                     
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_2:// ?????F????
+            case GameManager.OUT_CHANGES.MAN_2:// 男移動
                 {
                     Vector3 localPosition = man.GetComponent<Transform>().localPosition;
                     localPosition.x = NowData(0);
                     man.GetComponent<Transform>().localPosition = localPosition;
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_3:// ?????F????????
+            case GameManager.OUT_CHANGES.MAN_3:// 男大きく
                 {
                     Vector3 localScale = man.GetComponent<Transform>().localScale;
                     localScale.x = NowData(0);
                     man.GetComponent<Transform>().localScale = localScale;
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_4:// ?????F???^
+            case GameManager.OUT_CHANGES.MAN_4:// 男髪チェ
                 {
                     
                 }
                 break;
-            case GameManager.OUT_CHANGES.MAN_5:// ??????????????
+            case GameManager.OUT_CHANGES.MAN_5:// 男イライラする
                 {
 
                 }

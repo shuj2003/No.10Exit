@@ -100,7 +100,7 @@ public class GameManager2 : MonoBehaviour
 
                             gameResult.gameObject.SetActive(true);
 
-                            gameResult.showResultGameOver();
+                            gameResult.ShowResultGameOver();
 
                             if (!PlayerPrefs.HasKey("Ending"))
                             {
@@ -156,7 +156,7 @@ public class GameManager2 : MonoBehaviour
 
                     gameResult.gameObject.SetActive(true);
 
-                    gameResult.showResultGameClear();
+                    gameResult.ShowResultGameClear();
 
                     if (!PlayerPrefs.HasKey("Ending") || PlayerPrefs.GetInt("Ending") != 2)
                     {

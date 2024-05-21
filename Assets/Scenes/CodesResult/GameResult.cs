@@ -7,13 +7,13 @@ public class GameResult : MonoBehaviour
     public GameObject resultGameOver;
     public GameObject resultGameClear;
 
-    public void showResultGameOver()
+    public void ShowResultGameOver()
     {
         resultGameOver.SetActive(true);
         resultGameClear.SetActive(false);
     }
 
-    public void showResultGameClear()
+    public void ShowResultGameClear()
     {
         resultGameOver.SetActive(false);
         resultGameClear.SetActive(true);
