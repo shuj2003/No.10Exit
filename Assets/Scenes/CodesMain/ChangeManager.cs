@@ -77,17 +77,20 @@ public class ChangeManager : MonoBehaviour
                 }
                 break;
             case GameManager.OUT_CHANGES.WALL_3:// ŠG‚ª—‚¿‚é
-                {
-                    if (PlayerPrefs.HasKey("Ending") && PlayerPrefs.GetInt("Ending") == 1)
-                    {
-                        if (GameManager.instance.screctNums[GameManager.foundScrectNum - 1] == GameManager.count)
-                        {
-                            screctObjects[0].gameObject.SetActive(true);
-                            screctObjects[0].SetNo(GameManager.instance.screctNums[GameManager.foundScrectNum]);
-                        }
-                    }
-                }
-                break;
+                 {
+                     if (PlayerPrefs.HasKey("Ending") && PlayerPrefs.GetInt("Ending") >= 1)
+                     {
+                         if (GameManager.foundScrectNum < GameManager.instance.screctNums.Length && GameManager.instance.screctNums[GameManager.foundScrectNum] == GameManager.count)
+                         {
+                             if(GameManager.foundScrectNum + 1 < GameManager.instance.screctNums.Length)
+                             {
+                                 screctObjects[0].gameObject.SetActive(true);
+                                 screctObjects[0].SetNo(GameManager.instance.screctNums[GameManager.foundScrectNum + 1]);
+                             }
+                         }
+                     }
+                 }
+                 break;
             case GameManager.OUT_CHANGES.WINDOW_1:// ŠOˆÃ‚­‚È‚é
                 {
                     timeCount = 0f;

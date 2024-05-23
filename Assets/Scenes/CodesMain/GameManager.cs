@@ -41,14 +41,11 @@ public class GameManager : MonoBehaviour
     public static int foundScrectNum;
 
     private int outStandard = 4;
-    private int outLen = 100;
+    private int outLen = 12;
 
-    //public int[] screctNums = { 6, 3, 7 };
-    public int[] screctNums = { 1, 2, 3 };
-    private OUT_CHANGES[] screctChanges = { 
-        OUT_CHANGES.WALL_3,
-        OUT_CHANGES.WALL_3,
-        OUT_CHANGES.WALL_3 
+    //public int[] screctNums = { 6, 3, 7};
+    public int[] screctNums;
+    public OUT_CHANGES[] screctChanges = { 
     };
 
     private bool _isOut
@@ -105,7 +102,7 @@ public class GameManager : MonoBehaviour
         else
         {
 
-            if (PlayerPrefs.HasKey("Ending") && PlayerPrefs.GetInt("Ending") == 1)
+            if (PlayerPrefs.HasKey("Ending") && PlayerPrefs.GetInt("Ending") >= 1)
             {
                 titleText.ShowTitleX();
                 gameRuleText.ShowText(screctNums[0]);
@@ -210,17 +207,18 @@ public class GameManager : MonoBehaviour
         else
         {
             bool isScrectNum = false;
-            if (PlayerPrefs.HasKey("Ending") && PlayerPrefs.GetInt("Ending") == 1)
+            if (PlayerPrefs.HasKey("Ending") && PlayerPrefs.GetInt("Ending")  >= 1)
             {
-                if (screctNums[GameManager.foundScrectNum] == GameManager.count)
+                if (GameManager.foundScrectNum < screctNums.Length && screctNums[GameManager.foundScrectNum] == GameManager.count)
                 {
-                    isScrectNum = true;
 
-                    GameManager.foundScrectNum++;
+                    isScrectNum = true;
 
                     isOut = true;
                     changeNum = screctChanges[UnityEngine.Random.Range(0, screctChanges.Length)];
                     ChangeManager.instance.StartChange();
+
+                    GameManager.foundScrectNum++;
                 }
             }
 
@@ -298,11 +296,8 @@ public class GameManager : MonoBehaviour
                     GameManager.isLeftStart = false;
 
                     //if (GameManager.count == 11)
-                    if (GameManager.count == 7)
+                    if (GameManager.count == 5)
                     {
-                        if (!PlayerPrefs.HasKey("Ending")){
-                            PlayerPrefs.SetInt("Ending", 1);
-                        }
                         SceneManager.LoadScene(1);
                     }
                     else
@@ -344,7 +339,8 @@ public class GameManager : MonoBehaviour
                     }
                     GameManager.isLeftStart = true;
 
-                    if(GameManager.count == 1)
+                    //if (GameManager.count == 11)
+                    if (GameManager.count == 5)
                     {
                         SceneManager.LoadScene(1);
                     }

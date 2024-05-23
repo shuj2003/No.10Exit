@@ -147,7 +147,7 @@ public class GameManager2 : MonoBehaviour
         if (enableUI == false) return;
 
         enableUI = false;
-        if (PlayerPrefs.HasKey("Ending") && PlayerPrefs.GetInt("Ending") == 2)
+        if (GameManager.foundScrectNum >= GameManager.instance.screctNums.Length)
         {
             InDoorC(delegate ()
             {
