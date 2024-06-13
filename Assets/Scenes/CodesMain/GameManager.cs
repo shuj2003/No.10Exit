@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour
         WALL_2,
         WALL_3,
         WINDOW_1,
+        WINDOW_2,
         MAN_1,
         MAN_2,
         MAN_3,
@@ -223,7 +224,11 @@ public class GameManager : MonoBehaviour
             if (!isScrectNum)
             {
                 isOut = _isOut;
-                if (isOut) changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
+                if (isOut)
+                {
+                    changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
+                    changeNum = OUT_CHANGES.WINDOW_2;
+                }
                 ChangeManager.instance.StartChange();
             }
 

@@ -18,13 +18,16 @@ public class ChangeManager : MonoBehaviour
     public GameObject window_bg;
     public GameObject window_city;
     public GameObject window_light;
+    public GameObject window_Head;
 
+    [Header(" # Screct ")]
     public GameObject[] screctObjects;
 
     private float timeCount = 1f;
     private float timeEnd = 1f;
     private float[] startDatas;
     private float[] endDatas;
+    private int timeStep = 0;
 
     private void Awake()
     {
@@ -46,6 +49,7 @@ public class ChangeManager : MonoBehaviour
             if (s != null)
                 s.SetActive(false);
         }
+        window_Head.gameObject.SetActive(false);
 
         switch (GameManager.instance.changeNum)
         {
@@ -104,6 +108,16 @@ public class ChangeManager : MonoBehaviour
                     timeEnd = 15f;
                     startDatas = new float[] { 1f, 1f };
                     endDatas = new float[] { 0.25f, 0f };
+                }
+                break;
+            case GameManager.OUT_CHANGES.WINDOW_2:// ëÂÇ´Ç¢ì™
+                {
+                    window_Head.gameObject.SetActive(true);
+                    timeCount = 0f;
+                    timeEnd = 7f;
+                    startDatas = new float[] { -2.75f, 0f, 0f   , 2.75f, 2.75f, 0f, 0f    , -2.75f };
+                    endDatas = new float[]   { 0f    , 0f, 2.75f, 2.75f, 0f   , 0f, -2.75f, -2.75f };
+                    timeStep = 0;
                 }
                 break;
             case GameManager.OUT_CHANGES.MAN_1:// íjç∂âEãtì]
@@ -212,6 +226,25 @@ public class ChangeManager : MonoBehaviour
                     window_light.GetComponent<SpriteRenderer>().color = c;
                 }
                 break;
+            case GameManager.OUT_CHANGES.WINDOW_2:// ëÂÇ´Ç¢ì™
+                {
+                    Vector3 localPosition = window_Head.GetComponent<Transform>().localPosition;
+                    localPosition.x = NowData(timeStep);
+                    window_Head.GetComponent<Transform>().localPosition = localPosition;
+                    if(timeStep == 0 || timeStep == 7)
+                    {
+                        Vector3 localScale = window_Head.GetComponent<Transform>().localScale;
+                        localScale.x = 5f;
+                        window_Head.GetComponent<Transform>().localScale = localScale;
+                    }
+                    else if (timeStep == 3)
+                    {
+                        Vector3 localScale = window_Head.GetComponent<Transform>().localScale;
+                        localScale.x = -5f;
+                        window_Head.GetComponent<Transform>().localScale = localScale;
+                    }
+                }
+                break;
             case GameManager.OUT_CHANGES.MAN_1:// íjç∂âEãtì]
                 {
                     
@@ -245,8 +278,26 @@ public class ChangeManager : MonoBehaviour
                 break;
         }
 
-        if(timeCount < timeEnd)
+        if (timeCount < timeEnd)
+        {
             timeCount += Time.deltaTime;
-
+        }
+        else
+        {
+            timeCount = timeEnd;
+            switch (GameManager.instance.changeNum)
+            {
+                case GameManager.OUT_CHANGES.WINDOW_2:// ëÂÇ´Ç¢ì™
+                    {
+                        timeCount = 0f;
+                        timeStep++;
+                        if(timeStep >= startDatas.Length)
+                        {
+                            timeStep = 0;
+                        }
+                    }
+                    break;
+            }
+        }
     }
 }
