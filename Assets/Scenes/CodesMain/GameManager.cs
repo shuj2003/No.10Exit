@@ -43,10 +43,8 @@ public class GameManager : MonoBehaviour
     private int outStandard = 4;
     private int outLen = 12;
 
-    //public int[] screctNums = { 6, 3, 7};
     public int[] screctNums;
-    public OUT_CHANGES[] screctChanges = { 
-    };
+    public OUT_CHANGES[] screctChanges;
 
     private bool _isOut
     {
@@ -298,6 +296,10 @@ public class GameManager : MonoBehaviour
                     //if (GameManager.count == 11)
                     if (GameManager.count == 5)
                     {
+                        if (!PlayerPrefs.HasKey("Ending"))
+                        {
+                            PlayerPrefs.SetInt("Ending", 1);
+                        }
                         SceneManager.LoadScene(1);
                     }
                     else
@@ -342,6 +344,10 @@ public class GameManager : MonoBehaviour
                     //if (GameManager.count == 11)
                     if (GameManager.count == 5)
                     {
+                        if (!PlayerPrefs.HasKey("Ending"))
+                        {
+                            PlayerPrefs.SetInt("Ending", 1);
+                        }
                         SceneManager.LoadScene(1);
                     }
                     else

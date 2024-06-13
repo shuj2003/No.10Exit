@@ -19,7 +19,7 @@ public class ChangeManager : MonoBehaviour
     public GameObject window_city;
     public GameObject window_light;
 
-    public SpriteRendererNo[] screctObjects;
+    public GameObject[] screctObjects;
 
     private float timeCount = 1f;
     private float timeEnd = 1f;
@@ -41,10 +41,10 @@ public class ChangeManager : MonoBehaviour
     // Start is called before the first frame update
     public void StartChange()
     {
-        foreach(var s in screctObjects)
+        foreach(GameObject s in screctObjects)
         {
             if (s != null)
-                s.gameObject.SetActive(false);
+                s.SetActive(false);
         }
 
         switch (GameManager.instance.changeNum)
@@ -84,9 +84,16 @@ public class ChangeManager : MonoBehaviour
                          {
                              if(GameManager.foundScrectNum + 1 < GameManager.instance.screctNums.Length)
                              {
-                                 screctObjects[0].gameObject.SetActive(true);
-                                 screctObjects[0].SetNo(GameManager.instance.screctNums[GameManager.foundScrectNum + 1]);
-                             }
+                                screctObjects[0].gameObject.SetActive(true);
+                                SpriteRendererNo[] texts = screctObjects[0].GetComponentsInChildren<SpriteRendererNo>();
+                                foreach (SpriteRendererNo text in texts)
+                                {
+                                    text.gameObject.SetActive(false);
+                                }
+                                var idx = Random.Range(0, texts.Length);
+                                texts[idx].gameObject.SetActive(true);
+                                texts[idx].SetNo(GameManager.instance.screctNums[GameManager.foundScrectNum + 1]);
+                            }
                          }
                      }
                  }
