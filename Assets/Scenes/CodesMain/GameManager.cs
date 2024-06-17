@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
         MAN_3,
         MAN_4,
         MAN_5,
+        FLOOR_1,
         NONE,
     }
 
@@ -195,6 +196,14 @@ public class GameManager : MonoBehaviour
 
         GameLoop();
     }
+    
+    public void GameSet()
+    {
+        GameManager.isLeftStart = true;
+        GameManager.count = 0;
+
+        SceneManager.LoadScene(0);
+    }
 
     public void StarttHome()
     {
@@ -227,7 +236,7 @@ public class GameManager : MonoBehaviour
                 if (isOut)
                 {
                     changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
-                    changeNum = OUT_CHANGES.WINDOW_2;
+                    //changeNum = OUT_CHANGES.FLOOR_1;
                 }
                 ChangeManager.instance.StartChange();
             }

@@ -12,12 +12,13 @@ public class Player : Common
     public RuntimeAnimatorController[] animCon;
     public AnimationCurve fadeCurve;
     public GameObject CameraFollow;
+    public GameObject Skeletal;
+    public bool isAuto;
+    public bool enableControll;
 
     private Collider2D coll;
     private SpriteRenderer[] sprites;
     private Animator anim;
-    private bool isAuto;
-    private bool enableControll;
     private Vector3 targetPos;
 
     // Start is called before the first frame update

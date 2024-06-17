@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChangeManager : MonoBehaviour
 {
@@ -94,7 +96,7 @@ public class ChangeManager : MonoBehaviour
                                 {
                                     text.gameObject.SetActive(false);
                                 }
-                                var idx = Random.Range(0, texts.Length);
+                                var idx = UnityEngine.Random.Range(0, texts.Length);
                                 texts[idx].gameObject.SetActive(true);
                                 texts[idx].SetNo(GameManager.instance.screctNums[GameManager.foundScrectNum + 1]);
                             }
@@ -159,6 +161,14 @@ public class ChangeManager : MonoBehaviour
                     man.mouse.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0, 180);
                 }
                 break;
+            case GameManager.OUT_CHANGES.FLOOR_1://è∞Ç÷íæÇﬁ
+                {
+                    timeCount = 0f;
+                    timeEnd = 15f;
+                    startDatas = new float[] { 0f };
+                    endDatas = new float[] { -4.2f };
+                }
+                break;
             default:
                 break;
         }
@@ -169,6 +179,8 @@ public class ChangeManager : MonoBehaviour
     {
 
         if (!GameManager.isLive) return;
+        if (!GameManager.instance.player.enableControll) return;
+        if (GameManager.instance.player.isAuto) return;
 
         switch (GameManager.instance.changeNum)
         {
@@ -198,7 +210,7 @@ public class ChangeManager : MonoBehaviour
                         if ((GameManager.instance.player.transform.localPosition - localPosition).magnitude < 6 && obj.GetComponent<Rigidbody2D>().gravityScale == 0f)
                         {
                             obj.GetComponent<Rigidbody2D>().gravityScale = 1f;
-                            int r = (Random.Range(0, 2) * 2 - 1) * Random.Range(1, 31) * 2;
+                            int r = (UnityEngine.Random.Range(0, 2) * 2 - 1) * UnityEngine.Random.Range(1, 31) * 2;
                             obj.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0, r);
                         }
                     }
@@ -210,7 +222,7 @@ public class ChangeManager : MonoBehaviour
                         if ((GameManager.instance.player.transform.localPosition - localPosition).magnitude < 6 && obj.GetComponent<Rigidbody2D>().gravityScale == 0f)
                         {
                             obj.GetComponent<Rigidbody2D>().gravityScale = 1f;
-                            int r = (Random.Range(0, 2) * 2 - 1) * Random.Range(1, 31) * 2;
+                            int r = (UnityEngine.Random.Range(0, 2) * 2 - 1) * UnityEngine.Random.Range(1, 31) * 2;
                             obj.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0, r);
                         }
                     }
@@ -274,6 +286,29 @@ public class ChangeManager : MonoBehaviour
 
                 }
                 break;
+            case GameManager.OUT_CHANGES.FLOOR_1://è∞Ç÷íæÇﬁ
+                {
+
+                    Vector3 localPosition = GameManager.instance.player.Skeletal.GetComponent<Transform>().localPosition;
+                    Boolean canChange = localPosition.y != endDatas[0];
+                    localPosition.y = NowData(0);
+                    GameManager.instance.player.Skeletal.GetComponent<Transform>().localPosition = localPosition;
+                    if (localPosition.y == endDatas[0] && canChange)
+                    {
+                        GameManager.instance.fullScreenFade.gameObject.SetActive(true);
+                        var img = GameManager.instance.fullScreenFade.image.GetComponent<Image>();
+                        Color color = img.color;
+                        img.color = new Color(color.r, color.g, color.b, 1f);
+                        AudioManager.instance.PlaySfx(AudioManager.Sfx.Stab);
+                        StartCoroutine(Wait(delegate () {
+
+                            GameManager.instance.GameSet();
+
+                        }));
+                        
+                    }
+                }
+                break;
             default:
                 break;
         }
@@ -299,5 +334,11 @@ public class ChangeManager : MonoBehaviour
                     break;
             }
         }
+    }
+
+    private IEnumerator Wait(Action action)
+    {
+        yield return new WaitForSeconds(2f);
+        if (action != null) action();
     }
 }
