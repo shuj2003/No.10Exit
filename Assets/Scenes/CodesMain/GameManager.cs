@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour
         MAN_4,
         MAN_5,
         FLOOR_1,
+        NOTICE_1,
         NONE,
     }
 
@@ -236,7 +237,7 @@ public class GameManager : MonoBehaviour
                 if (isOut)
                 {
                     changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
-                    //changeNum = OUT_CHANGES.FLOOR_1;
+                    //changeNum = OUT_CHANGES.NOTICE_1;
                 }
                 ChangeManager.instance.StartChange();
             }

@@ -25,6 +25,12 @@ public class ChangeManager : MonoBehaviour
     [Header(" # Screct ")]
     public GameObject[] screctObjects;
 
+    [Header(" # Notice ")]
+    public Text noticeTextL;
+    public Text noticeTextR;
+    public Text noticeButtonTextL;
+    public Text noticeButtonTextR;
+
     private float timeCount = 1f;
     private float timeEnd = 1f;
     private float[] startDatas;
@@ -52,6 +58,11 @@ public class ChangeManager : MonoBehaviour
                 s.SetActive(false);
         }
         window_Head.gameObject.SetActive(false);
+
+        noticeTextL.text = "Open?";
+        noticeButtonTextL.text = "YES";
+        noticeTextR.text = "Open?";
+        noticeButtonTextR.text = "YES";
 
         switch (GameManager.instance.changeNum)
         {
@@ -167,6 +178,18 @@ public class ChangeManager : MonoBehaviour
                     timeEnd = 15f;
                     startDatas = new float[] { 0f };
                     endDatas = new float[] { -4.2f };
+                }
+                break;
+            case GameManager.OUT_CHANGES.NOTICE_1:
+                if (GameManager.isLeftStart)
+                {
+                    noticeTextR.text = "Back Now!";
+                    noticeButtonTextR.text = "NO";
+                }
+                else
+                {
+                    noticeTextL.text = "Back Now!";
+                    noticeButtonTextL.text = "NO";
                 }
                 break;
             default:
