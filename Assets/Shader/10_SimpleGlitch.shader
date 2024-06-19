@@ -6,7 +6,7 @@ Shader "Unlit/10_SimpleGlitch" {
         _NoiseSpeed("Noise Speed", Range(1,10)) = 10
     }   
     SubShader {
-        Tags { "RenderType"="Opaque" }
+        Tags { "Queue"="Transparent" }
         LOD 100
 
         Pass {
@@ -19,24 +19,29 @@ Shader "Unlit/10_SimpleGlitch" {
             struct appdata {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
+                float4 color    : COLOR;
             };
 
             struct v2f {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
+                float4 color    : COLOR;
             };
 
             sampler2D _MainTex;
             float _GlitchIntensity;
             float _BlockScale;
             float _NoiseSpeed;
+            fixed4 _TextureSampleAdd;
 
+            /*
             v2f vert (appdata v) {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
                 return o;
             }
+            */
 
             float random(float2 seeds)
             {
@@ -53,7 +58,35 @@ Shader "Unlit/10_SimpleGlitch" {
                 return -1.0 + 2.0 * blockNoise(seeds);
             }
 
+            // 頂点シェーダー
+            // appdata_t を受け取って v2f を返す
+            v2f vert(appdata i)
+            {
+                // フラグメントシェーダーに渡す変数
+                v2f OUT;
+
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
+
+                float4 color;
+                float2 gv = i.uv;
+                float noise = blockNoise(i.uv.y * _BlockScale);
+                noise += random(i.uv.x) * 0.3;
+                float2 randomvalue = noiserandom(float2(i.uv.y, _Time.y * _NoiseSpeed));
+                gv.x += randomvalue * sin(sin(_GlitchIntensity)*.5) * sin(-sin(noise)*.2) * frac(_Time.y);
+                color.r = tex2D(_MainTex, gv + float2(0.006, 0)).r;
+                color.g = tex2D(_MainTex, gv).g;
+                color.b = tex2D(_MainTex, gv - float2(0.008, 0)).b;
+                color.a = 1.0;
+
+                OUT.color = color;
+
+                return OUT;
+                
+            }
+
+            /*
             fixed4 frag (v2f i) : SV_Target {
+
                 float4 color;
                 float2 gv = i.uv;
                 float noise = blockNoise(i.uv.y * _BlockScale);
@@ -67,6 +100,14 @@ Shader "Unlit/10_SimpleGlitch" {
 
                 return color;
             }
+            */
+
+            fixed4 frag (v2f IN) : SV_Target {
+
+                return (tex2D(_MainTex, IN.uv) + _TextureSampleAdd) * IN.color;
+                
+            }
+
             ENDCG
         }
     }

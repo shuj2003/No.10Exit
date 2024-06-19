@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     public static int count;
     public static int foundScrectNum;
 
-    private int outStandard = 4;
+    private static int outStandard = 4;
     private int outLen = 12;
 
     public int[] screctNums;
@@ -50,14 +50,14 @@ public class GameManager : MonoBehaviour
     {
         get {
             int rd = UnityEngine.Random.Range(0, outLen);
-            bool flag = rd > outStandard;
-            if(rd <= outStandard)
+            bool flag = rd > GameManager.outStandard;
+            if(rd <= GameManager.outStandard)
             {
-                outStandard--;
+                GameManager.outStandard--;
             }
             else
             {
-                outStandard = 4;
+                GameManager.outStandard = 4;
             }
             return flag;
         }
@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
         MAN_5,
         FLOOR_1,
         NOTICE_1,
+        CANVAS_1,
         NONE,
     }
 
@@ -197,13 +198,36 @@ public class GameManager : MonoBehaviour
 
         GameLoop();
     }
-    
+
+    private IEnumerator Wait(Action action, float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        if (action != null) action();
+    }
+
     public void GameSet()
     {
-        GameManager.isLeftStart = true;
-        GameManager.count = 0;
+        RectTransform tr = noticeLeft.GetComponent<RectTransform>();
+        tr.anchoredPosition = new Vector2(-60f, tr.anchoredPosition.y);
+        tr = noticeRight.GetComponent<RectTransform>();
+        tr.anchoredPosition = new Vector2(60f, tr.anchoredPosition.y);
 
-        SceneManager.LoadScene(0);
+        fullScreenFade.gameObject.SetActive(true);
+        var img = fullScreenFade.image.GetComponent<Image>();
+        Color color = img.color;
+        img.color = new Color(color.r, color.g, color.b, 1f);
+        AudioManager.instance.EffectBgm(true);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Stab);
+        StartCoroutine(Wait(delegate () {
+
+            GameManager.isLeftStart = true;
+            GameManager.count = 0;
+
+            AudioManager.instance.EffectBgm(false);
+            SceneManager.LoadScene(0);
+
+        }, 2f));
+
     }
 
     public void StarttHome()
@@ -237,7 +261,7 @@ public class GameManager : MonoBehaviour
                 if (isOut)
                 {
                     changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
-                    //changeNum = OUT_CHANGES.NOTICE_1;
+                    changeNum = OUT_CHANGES.CANVAS_1;
                 }
                 ChangeManager.instance.StartChange();
             }
@@ -311,10 +335,6 @@ public class GameManager : MonoBehaviour
                     //if (GameManager.count == 11)
                     if (GameManager.count == 5)
                     {
-                        if (!PlayerPrefs.HasKey("Ending"))
-                        {
-                            PlayerPrefs.SetInt("Ending", 1);
-                        }
                         SceneManager.LoadScene(1);
                     }
                     else
@@ -359,10 +379,6 @@ public class GameManager : MonoBehaviour
                     //if (GameManager.count == 11)
                     if (GameManager.count == 5)
                     {
-                        if (!PlayerPrefs.HasKey("Ending"))
-                        {
-                            PlayerPrefs.SetInt("Ending", 1);
-                        }
                         SceneManager.LoadScene(1);
                     }
                     else

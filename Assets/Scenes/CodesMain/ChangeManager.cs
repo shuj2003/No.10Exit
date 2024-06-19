@@ -31,6 +31,9 @@ public class ChangeManager : MonoBehaviour
     public Text noticeButtonTextL;
     public Text noticeButtonTextR;
 
+    [Header(" # Canvas ")]
+    public GameObject eyesNum;
+
     private float timeCount = 1f;
     private float timeEnd = 1f;
     private float[] startDatas;
@@ -58,6 +61,10 @@ public class ChangeManager : MonoBehaviour
                 s.SetActive(false);
         }
         window_Head.gameObject.SetActive(false);
+        eyesNum.SetActive(false);
+        Image img = eyesNum.GetComponent<Image>();
+        Color color = img.color;
+        img.color = new Color(color.r, color.g, color.b, 0f);
 
         noticeTextL.text = "Open?";
         noticeButtonTextL.text = "YES";
@@ -95,6 +102,7 @@ public class ChangeManager : MonoBehaviour
                 break;
             case GameManager.OUT_CHANGES.WALL_3:// 絵が落ちる
                  {
+                     //秘密番号表示
                      if (PlayerPrefs.HasKey("Ending") && PlayerPrefs.GetInt("Ending") >= 1)
                      {
                          if (GameManager.foundScrectNum < GameManager.instance.screctNums.Length && GameManager.instance.screctNums[GameManager.foundScrectNum] == GameManager.count)
@@ -153,7 +161,7 @@ public class ChangeManager : MonoBehaviour
                     timeCount = 0f;
                     timeEnd = 15f;
                     startDatas = new float[] { 0.2f };
-                    endDatas = new float[] { 0.24f };
+                    endDatas = new float[] { 0.3f };
                 }
                 break;
             case GameManager.OUT_CHANGES.MAN_4:// 男髪チェ
@@ -190,6 +198,48 @@ public class ChangeManager : MonoBehaviour
                 {
                     noticeTextL.text = "Back Now!";
                     noticeButtonTextL.text = "NO";
+                }
+                break;
+            case GameManager.OUT_CHANGES.CANVAS_1://目玉一杯出す
+                {
+                    eyesNum.SetActive(true);
+                    List<Image> eyeList = new List<Image>(eyesNum.GetComponentsInChildren<Image>(true));
+                    eyeList.RemoveAt(0);
+                    foreach (var eye in eyeList)
+                    {
+                        eye.gameObject.SetActive(false);
+                    }
+                    List<int> nums = new List<int>();
+                    for (int i = 0; i < eyeList.Count; i++)
+                    {
+                        nums.Add(i);
+                    }
+                    List<float> numsRandom = new List<float>();
+                    while(nums.Count > 0)
+                    {
+                        int idx = UnityEngine.Random.Range(0, nums.Count);
+                        numsRandom.Add((float)nums[idx]);
+                        nums.RemoveAt(idx);
+                    }
+                    startDatas = numsRandom.ToArray();
+                    timeCount = 0f;
+                    timeEnd = 0.1f + 0.003f * eyeList.Count * eyeList.Count;
+                    timeStep = 0;
+                    //秘密番号表示
+                    if (PlayerPrefs.HasKey("Ending") && PlayerPrefs.GetInt("Ending") >= 1)
+                    {
+                        if (GameManager.foundScrectNum < GameManager.instance.screctNums.Length && GameManager.instance.screctNums[GameManager.foundScrectNum] == GameManager.count)
+                        {
+                            if (GameManager.foundScrectNum + 1 < GameManager.instance.screctNums.Length)
+                            {
+                                Image imgNum = eyesNum.GetComponent<Image>();
+                                Color colorNum = img.color;
+                                imgNum.color = new Color(colorNum.r, colorNum.g, colorNum.b, 1f);
+                                NumImageForCanvas numImageForCanvas = eyesNum.GetComponent<NumImageForCanvas>();
+                                numImageForCanvas.SetNum(GameManager.instance.screctNums[GameManager.foundScrectNum + 1]);
+                            }
+                        }
+                    }
                 }
                 break;
             default:
@@ -318,18 +368,13 @@ public class ChangeManager : MonoBehaviour
                     GameManager.instance.player.Skeletal.GetComponent<Transform>().localPosition = localPosition;
                     if (localPosition.y == endDatas[0] && canChange)
                     {
-                        GameManager.instance.fullScreenFade.gameObject.SetActive(true);
-                        var img = GameManager.instance.fullScreenFade.image.GetComponent<Image>();
-                        Color color = img.color;
-                        img.color = new Color(color.r, color.g, color.b, 1f);
-                        AudioManager.instance.PlaySfx(AudioManager.Sfx.Stab);
-                        StartCoroutine(Wait(delegate () {
-
-                            GameManager.instance.GameSet();
-
-                        }));
-                        
+                        GameManager.instance.GameSet();   
                     }
+                }
+                break;
+            case GameManager.OUT_CHANGES.CANVAS_1://目玉一杯出す
+                {
+                    
                 }
                 break;
             default:
@@ -355,13 +400,28 @@ public class ChangeManager : MonoBehaviour
                         }
                     }
                     break;
+                case GameManager.OUT_CHANGES.CANVAS_1:
+                    {
+                        List<Image> eyeList = new List<Image>(eyesNum.GetComponentsInChildren<Image>(true));
+                        eyeList.RemoveAt(0);
+                        if (timeStep < eyeList.Count)
+                        {
+                            eyeList[(int)startDatas[timeStep]].gameObject.SetActive(true);
+                            timeStep++;
+                            timeCount = 0f;
+                            timeEnd = 0.1f + 0.003f * (eyeList.Count - timeStep) * (eyeList.Count - timeStep);
+                        }
+                        else if(timeStep == eyeList.Count)
+                        {
+                            timeStep++;
+                            GameManager.instance.GameSet();
+                        }
+                    }
+                    break;
+                default:
+                    break;
             }
         }
     }
 
-    private IEnumerator Wait(Action action)
-    {
-        yield return new WaitForSeconds(2f);
-        if (action != null) action();
-    }
 }
