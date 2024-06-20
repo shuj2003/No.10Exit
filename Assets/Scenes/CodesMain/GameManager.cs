@@ -185,6 +185,8 @@ public class GameManager : MonoBehaviour
 
     public void GameStart()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Decision);
+
         GameManager.isLeftStart = true;
         GameManager.count = 0;
         GameManager.isLive = true;
@@ -301,6 +303,8 @@ public class GameManager : MonoBehaviour
     public void ToNextHome()
     {
         if (enableUI == false) return;
+
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
 
         if (showLeftNotice)
         {

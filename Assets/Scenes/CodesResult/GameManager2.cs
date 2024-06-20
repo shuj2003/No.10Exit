@@ -50,6 +50,8 @@ public class GameManager2 : MonoBehaviour
 
     public void TapAnywhere()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Decision);
+
         fullScreenFade.gameObject.SetActive(true);
         fullScreenFade.FadeIn(delegate () {
             
@@ -145,6 +147,8 @@ public class GameManager2 : MonoBehaviour
     public void ToNextHome()
     {
         if (enableUI == false) return;
+
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
 
         enableUI = false;
         if (GameManager.foundScrectNum >= GameManager.instance.screctNums.Length)
