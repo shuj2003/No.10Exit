@@ -82,7 +82,7 @@ public class GameManager2 : MonoBehaviour
             var img = fullScreenFade.image.GetComponent<Image>();
             Color color = img.color;
             img.color = new Color(color.r, color.g, color.b, 1f);
-            AudioManager.instance.PlaySfx(AudioManager.Sfx.Stab);
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.HIT);
             StartCoroutine(Wait(delegate ()
             {
                 head.GetComponent<Rigidbody2D>().velocity = new Vector2(-1f, 0f);

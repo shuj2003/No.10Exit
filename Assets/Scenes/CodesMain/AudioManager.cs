@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +29,9 @@ public class AudioManager : MonoBehaviour
         Decision,
         Laughter,
         Stab,
+        HIT,
+        CALL,
+        CALL_FAIL,
     }
 
     private void Awake()
@@ -80,7 +84,7 @@ public class AudioManager : MonoBehaviour
         bgmEffect.enabled = isPlay;
     }
 
-    public void PlaySfx(Sfx sfx)
+    public void PlaySfx(Sfx sfx, Action callback = null)
     {
 
         for (int index = 0; index < sfxPlayers.Length; index++)
@@ -96,6 +100,11 @@ public class AudioManager : MonoBehaviour
 
             sfxPlayers[channleIndex].clip = sfxClips[(int)sfx];
             sfxPlayers[channleIndex].Play();
+
+            if(callback != null)
+            {
+                StartCoroutine(Checking(sfxPlayers[channleIndex], callback));
+            }
 
             break;
 
@@ -135,6 +144,19 @@ public class AudioManager : MonoBehaviour
     private void Update()
     {
         bgmPlayer.volume = bgmVolume;
+    }
+
+    private IEnumerator Checking(AudioSource audio, Action callback)
+    {
+        while (true)
+        {
+            yield return new WaitForFixedUpdate();
+            if (!audio.isPlaying)
+            {
+                callback();
+                break;
+            }
+        }
     }
 
 }

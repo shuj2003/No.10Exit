@@ -20,11 +20,13 @@ public class Player : Common
     private SpriteRenderer[] sprites;
     private Animator anim;
     private Vector3 targetPos;
+    private Boolean isCall;
 
     // Start is called before the first frame update
 
     private void Start()
     {
+        isCall = false;
         isAuto = true;
         enableControll = false;
         foreach(var sprite in sprites)
@@ -194,13 +196,15 @@ public class Player : Common
         float len = GameManager.instance.man.transform.position.x - GameManager.instance.player.transform.position.x;
         float len2 = len * len;
         float max2 = 10f * 10f;
-        if (len2 < max2)
+        if (len2 < max2 && !isCall)
         {
-            //AudioManager.instance.bgmVolume = (1f - len2 / max2) * 0.2f;
-        }
-        else
-        {
-            //AudioManager.instance.bgmVolume = 0f;
+            AudioManager.instance.EffectBgm(true);
+            isCall = true;
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.CALL, delegate {
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.CALL_FAIL, delegate {
+                    AudioManager.instance.EffectBgm(false);
+                });
+            });
         }
 
     }
