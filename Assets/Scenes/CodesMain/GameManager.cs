@@ -264,7 +264,8 @@ public class GameManager : MonoBehaviour
                 if (isOut)
                 {
                     changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
-                    changeNum = OUT_CHANGES.DOOR_1;
+
+                    //changeNum = OUT_CHANGES.DOOR_1;
                 }
                 ChangeManager.instance.StartChange();
             }
@@ -337,8 +338,8 @@ public class GameManager : MonoBehaviour
                     }
                     GameManager.isLeftStart = false;
 
-                    //if (GameManager.count == 11 || GameManager.foundScrectNum >= GameManager.instance.screctNums.Length)
                     if (
+                        //GameManager.count == 11 ||
                         GameManager.count == 5 || 
                         (GameManager.foundScrectNum >= GameManager.instance.screctNums.Length && screctNums[screctNums.Length - 1] == (GameManager.count - 1))
                     )
@@ -384,8 +385,8 @@ public class GameManager : MonoBehaviour
                     }
                     GameManager.isLeftStart = true;
 
-                    //if (GameManager.count == 11 || GameManager.foundScrectNum >= GameManager.instance.screctNums.Length)
                     if (
+                        //GameManager.count == 11 ||
                         GameManager.count == 5 ||
                         (GameManager.foundScrectNum >= GameManager.instance.screctNums.Length && screctNums[screctNums.Length - 1] == (GameManager.count - 1))
                     )
