@@ -34,6 +34,9 @@ public class ChangeManager : MonoBehaviour
     [Header(" # Canvas ")]
     public GameObject eyesNum;
 
+    [Header(" # Door ")]
+    public GameObject[] doorNums;
+
     private float timeCount = 1f;
     private float timeEnd = 1f;
     private float[] startDatas;
@@ -242,6 +245,8 @@ public class ChangeManager : MonoBehaviour
                     }
                 }
                 break;
+            case GameManager.OUT_CHANGES.DOOR_1://”š‚ª‰ñ“]
+                break;
             default:
                 break;
         }
@@ -375,6 +380,18 @@ public class ChangeManager : MonoBehaviour
             case GameManager.OUT_CHANGES.CANVAS_1://–Ú‹Êˆê”to‚·
                 {
                     
+                }
+                break;
+            case GameManager.OUT_CHANGES.DOOR_1://”š‚ª‰ñ“]
+                {
+                    foreach(var doorNum in doorNums)
+                    {
+                        // transform‚ğæ“¾
+                        Transform transform = doorNum.transform;
+
+                        // ƒ[ƒJƒ‹À•WŠî€‚ÅAŒ»İ‚Ì‰ñ“]—Ê‚Ö‰ÁZ‚·‚é
+                        transform.Rotate(0f, 0f, -15.0f * Time.deltaTime);
+                    }
                 }
                 break;
             default:

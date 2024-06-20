@@ -80,6 +80,7 @@ public class GameManager : MonoBehaviour
         FLOOR_1,
         NOTICE_1,
         CANVAS_1,
+        DOOR_1,
         NONE,
     }
 
@@ -261,7 +262,7 @@ public class GameManager : MonoBehaviour
                 if (isOut)
                 {
                     changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
-                    changeNum = OUT_CHANGES.CANVAS_1;
+                    changeNum = OUT_CHANGES.DOOR_1;
                 }
                 ChangeManager.instance.StartChange();
             }
@@ -332,8 +333,8 @@ public class GameManager : MonoBehaviour
                     }
                     GameManager.isLeftStart = false;
 
-                    //if (GameManager.count == 11)
-                    if (GameManager.count == 5)
+                    //if (GameManager.count == 11 || GameManager.foundScrectNum >= GameManager.instance.screctNums.Length)
+                    if (GameManager.count == 5 || GameManager.foundScrectNum >= GameManager.instance.screctNums.Length)
                     {
                         SceneManager.LoadScene(1);
                     }
@@ -376,8 +377,8 @@ public class GameManager : MonoBehaviour
                     }
                     GameManager.isLeftStart = true;
 
-                    //if (GameManager.count == 11)
-                    if (GameManager.count == 5)
+                    //if (GameManager.count == 11 || GameManager.foundScrectNum >= GameManager.instance.screctNums.Length)
+                    if (GameManager.count == 5 || GameManager.foundScrectNum >= GameManager.instance.screctNums.Length)
                     {
                         SceneManager.LoadScene(1);
                     }
