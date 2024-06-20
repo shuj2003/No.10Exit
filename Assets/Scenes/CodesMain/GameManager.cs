@@ -338,7 +338,10 @@ public class GameManager : MonoBehaviour
                     GameManager.isLeftStart = false;
 
                     //if (GameManager.count == 11 || GameManager.foundScrectNum >= GameManager.instance.screctNums.Length)
-                    if (GameManager.count == 5 || GameManager.foundScrectNum >= GameManager.instance.screctNums.Length)
+                    if (
+                        GameManager.count == 5 || 
+                        (GameManager.foundScrectNum >= GameManager.instance.screctNums.Length && screctNums[screctNums.Length - 1] == (GameManager.count - 1))
+                    )
                     {
                         SceneManager.LoadScene(1);
                     }
@@ -382,7 +385,10 @@ public class GameManager : MonoBehaviour
                     GameManager.isLeftStart = true;
 
                     //if (GameManager.count == 11 || GameManager.foundScrectNum >= GameManager.instance.screctNums.Length)
-                    if (GameManager.count == 5 || GameManager.foundScrectNum >= GameManager.instance.screctNums.Length)
+                    if (
+                        GameManager.count == 5 ||
+                        (GameManager.foundScrectNum >= GameManager.instance.screctNums.Length && screctNums[screctNums.Length - 1] == (GameManager.count - 1))
+                    )
                     {
                         SceneManager.LoadScene(1);
                     }
