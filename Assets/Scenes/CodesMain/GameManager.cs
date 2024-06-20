@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     public static int count;
     public static int foundScrectNum;
 
-    private static int outStandard = 4;
+    private static int outStandard = 3;
     private int outLen = 12;
 
     public int[] screctNums;
