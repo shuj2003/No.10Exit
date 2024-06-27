@@ -81,6 +81,10 @@ public class GameManager : MonoBehaviour
         NOTICE_1,
         CANVAS_1,
         DOOR_1,
+        TABLE_1,
+        TABLE_2,
+        TABLE_3,
+        TABLE_4,
         NONE,
     }
 
@@ -265,7 +269,7 @@ public class GameManager : MonoBehaviour
                 {
                     changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
 
-                    //changeNum = OUT_CHANGES.CANVAS_1;
+                    //changeNum = OUT_CHANGES.TABLE_4;
 ;
                 }
                 ChangeManager.instance.StartChange();

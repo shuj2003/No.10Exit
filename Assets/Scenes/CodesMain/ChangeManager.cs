@@ -37,6 +37,18 @@ public class ChangeManager : MonoBehaviour
     [Header(" # Door ")]
     public GameObject[] doorNums;
 
+    [Header(" # Book_VASE ")]
+    public GameObject[] book1;
+    public GameObject[] book2;
+    public GameObject[] vase1;
+    public GameObject[] vase2;
+
+    [Header(" # TABLE ")]
+    public GameObject[] tables;
+    private Boolean[] tablesMoved;
+    public GameObject[] armchairs;
+    public GameObject table2;
+
     private float timeCount = 1f;
     private float timeEnd = 1f;
     private float[] startDatas;
@@ -73,6 +85,12 @@ public class ChangeManager : MonoBehaviour
         noticeButtonTextL.text = "YES";
         noticeTextR.text = "Open?";
         noticeButtonTextR.text = "YES";
+
+        tablesMoved = new Boolean[tables.Length];
+        for (int i = 0; i < tablesMoved.Length ; i++)
+        {
+            tablesMoved[i] = false;
+        }
 
         switch (GameManager.instance.changeNum)
         {
@@ -247,6 +265,35 @@ public class ChangeManager : MonoBehaviour
                 break;
             case GameManager.OUT_CHANGES.DOOR_1://数字が回転
                 break;
+            case GameManager.OUT_CHANGES.TABLE_1: //もの増える
+                {
+                    timeCount = 0f;
+                    timeEnd = 5f;
+                    startDatas = new float[] { 0f };
+                    endDatas = new float[] { 1f };
+                    timeStep = 0;
+                }
+                break;
+            case GameManager.OUT_CHANGES.TABLE_2: //テーブル移動
+                { 
+                }
+                break;
+            case GameManager.OUT_CHANGES.TABLE_3: //テーブル色チェンジ
+                {
+                    timeCount = 0f;
+                    timeEnd = 30f;
+                    startDatas = new float[] { 1f };
+                    endDatas = new float[] { 0f };
+                }
+                break;
+            case GameManager.OUT_CHANGES.TABLE_4: //テーブル回転
+                {
+                    timeCount = 0f;
+                    timeEnd = 4f;
+                    startDatas = new float[] { 0f };
+                    endDatas = new float[] { 360f };
+                }
+                break;
             default:
                 break;
         }
@@ -394,6 +441,85 @@ public class ChangeManager : MonoBehaviour
                     }
                 }
                 break;
+            case GameManager.OUT_CHANGES.TABLE_1: //もの増える
+                {
+                    List<GameObject> objs = new List<GameObject>();
+                    if (timeStep < book1.Length) objs.Add(book1[timeStep]);
+                    if (timeStep < book2.Length) objs.Add(book2[timeStep]);
+                    if (timeStep < vase1.Length) objs.Add(vase1[timeStep]);
+                    if (timeStep < vase2.Length) objs.Add(vase2[timeStep]);
+                    foreach (var obj in objs)
+                    {
+                        Color c = obj.GetComponent<SpriteRenderer>().color;
+                        c.a = NowData(0);
+                        obj.GetComponent<SpriteRenderer>().color = c;
+                    }
+                }
+                break;
+            case GameManager.OUT_CHANGES.TABLE_2: //テーブル移動
+                {
+                    for (int i = 0; i < tables.Length; i++)
+                    {
+                        var table = tables[i];
+
+                        if (!tablesMoved[i] && Math.Abs(GameManager.instance.player.transform.localPosition.x - table.transform.localPosition.x) <= 3f)
+                        {
+                            tablesMoved[i] = true;
+                            timeCount = 0f;
+                            timeEnd = 0.2f;
+                            startDatas = new float[] { table.transform.localPosition.y };
+                            endDatas = new float[] { GameManager.instance.player.transform.localPosition.y };
+                            timeStep = i;
+                        }
+                    }
+
+                    if (tablesMoved[timeStep])
+                    {
+                        var table = tables[timeStep];
+                        Vector3 localPosition = table.GetComponent<Transform>().localPosition;
+                        localPosition.y = NowData(0);
+                        table.GetComponent<Transform>().localPosition = localPosition;
+                    }
+                }
+                break;
+            case GameManager.OUT_CHANGES.TABLE_3: //テーブル色チェンジ
+                {
+                    foreach (var armchair in armchairs)
+                    {
+                        Color c = armchair.GetComponent<SpriteRenderer>().color;
+                        c.b = NowData(0);
+                        armchair.GetComponent<SpriteRenderer>().color = c;
+                    }
+                }
+                break;
+            case GameManager.OUT_CHANGES.TABLE_4: //テーブル回転
+                {
+                    Vector2 center = new Vector2(-12f, -4.2f);
+                    Vector2 r = new Vector2(3f, 1.4f);
+                    
+                    for(int i = 0; i < armchairs.Length; i++)
+                    {
+                        var armchair = armchairs[i];
+                        Vector3 localPosition = armchair.GetComponent<Transform>().localPosition;
+                        float dgree = (NowData(0) + i * 90f) % 360f;
+                        Vector2 move = new Vector2(r.x * (float)Math.Cos(Math.PI * dgree / 180.0f), r.y * (float)Math.Sin(Math.PI * dgree / 180.0f));
+                        localPosition.x = center.x + move.x;
+                        localPosition.y = center.y - move.y;
+                        armchair.GetComponent<Transform>().localPosition = localPosition;
+                    }
+
+                    Vector2 center2 = new Vector2(8.2f, -4.08f);
+                    Vector2 r2 = new Vector2(3f, 0f);
+
+                    Vector3 localPosition2 = table2.GetComponent<Transform>().localPosition;
+                    float dgree2 = (NowData(0) + 270f) % 360f;
+                    Vector2 move2 = new Vector2(r2.x * (float)Math.Cos(Math.PI * dgree2 / 180.0f), r2.y * (float)Math.Sin(Math.PI * dgree2 / 180.0f));
+                    localPosition2.x = center2.x + move2.x;
+                    localPosition2.y = center2.y - move2.y;
+                    table2.GetComponent<Transform>().localPosition = localPosition2;
+
+                }
+                break;
             default:
                 break;
         }
@@ -433,6 +559,23 @@ public class ChangeManager : MonoBehaviour
                             timeStep++;
                             GameManager.instance.GameSet();
                         }
+                    }
+                    break;
+                case GameManager.OUT_CHANGES.TABLE_1: //もの増える
+                    {
+                        timeCount = 0f;
+                        if (timeStep < 999)
+                            timeStep++;
+                    }
+                    break;
+                case GameManager.OUT_CHANGES.TABLE_2: //テーブル移動
+                    {
+                        
+                    }
+                    break;
+                case GameManager.OUT_CHANGES.TABLE_4: //テーブル回転
+                    {
+                        timeCount = 0f;
                     }
                     break;
                 default:
