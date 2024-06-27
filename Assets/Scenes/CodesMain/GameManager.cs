@@ -270,7 +270,7 @@ public class GameManager : MonoBehaviour
                     changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
 
                     //changeNum = OUT_CHANGES.TABLE_4;
-;
+
                 }
                 ChangeManager.instance.StartChange();
             }
