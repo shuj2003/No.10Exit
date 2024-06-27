@@ -40,8 +40,8 @@ public class GameManager : MonoBehaviour
     public static int count;
     public static int foundScrectNum;
 
-    private static int outStandard = 3;
-    private int outLen = 12;
+    private static int outStandard = 2;
+    private int outLen = 10;
 
     public int[] screctNums;
     public OUT_CHANGES[] screctChanges;
@@ -51,13 +51,13 @@ public class GameManager : MonoBehaviour
         get {
             int rd = UnityEngine.Random.Range(0, outLen);
             bool flag = rd > GameManager.outStandard;
-            if(rd <= GameManager.outStandard)
+            if(rd < GameManager.outStandard)
             {
                 GameManager.outStandard--;
             }
             else
             {
-                GameManager.outStandard = 4;
+                GameManager.outStandard = 2;
             }
             return flag;
         }
