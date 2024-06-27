@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     public static int count;
     public static int foundScrectNum;
 
-    private static int outStandard = 2;
+    private static int outStandard = 1;
     private int outLen = 10;
 
     public int[] screctNums;
@@ -51,13 +51,13 @@ public class GameManager : MonoBehaviour
         get {
             int rd = UnityEngine.Random.Range(0, outLen);
             bool flag = rd > GameManager.outStandard;
-            if(rd < GameManager.outStandard)
+            if(!flag)
             {
                 GameManager.outStandard--;
             }
             else
             {
-                GameManager.outStandard = 2;
+                GameManager.outStandard = 1;
             }
             return flag;
         }
@@ -265,7 +265,8 @@ public class GameManager : MonoBehaviour
                 {
                     changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
 
-                    //changeNum = OUT_CHANGES.DOOR_1;
+                    changeNum = OUT_CHANGES.CANVAS_1;
+;
                 }
                 ChangeManager.instance.StartChange();
             }
