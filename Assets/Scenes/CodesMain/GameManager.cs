@@ -265,7 +265,7 @@ public class GameManager : MonoBehaviour
                 {
                     changeNum = (OUT_CHANGES)Enum.ToObject(typeof(OUT_CHANGES), UnityEngine.Random.Range(0, (int)OUT_CHANGES.NONE));
 
-                    changeNum = OUT_CHANGES.CANVAS_1;
+                    //changeNum = OUT_CHANGES.CANVAS_1;
 ;
                 }
                 ChangeManager.instance.StartChange();
